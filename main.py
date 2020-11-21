@@ -17,11 +17,21 @@ def generarBernoulli(p):
         return 0
 
 #2. Utilizando la función del punto anterior, implemente otra que genere un número binomial con los parámetros n,p.
+def generarBinomial(n, p):
+    j = 0
+    cant_exitos = 0
+    while j < n:
+        if(generarBernoulli(p) == 1):
+            cant_exitos +=1
+        j += 1
+    return cant_exitos
 
-def binomial(n, p):
-    
+#p -> probabilidad de exito de un experimento
+#n -> cantidad de experimentos
+#x -> la probabilidad de que x experimentos sean exitosos
 
-#3. Utilizando el procedimiento descrito en el capítulo 6 del Dekking (método de la función inversa o de Monte Carlo), imple-
-#mentar una función que permita generar un número aleatorio con distribución E xp(λ).
+
+#3. Utilizando el procedimiento descrito en el capítulo 6 del Dekking (método de la función inversa o de Monte Carlo), implementar
+# una función que permita generar un número aleatorio con distribución Exp(λ).
 
 #4. Investigar como generar números aleatorios con distribución normal. Implementarlo.
