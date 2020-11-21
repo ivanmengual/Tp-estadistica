@@ -8,15 +8,18 @@ def calcularAleatorio():
 
 #implemente una función que genere un número distribuido Bernoulli con probabilidad p.
 
-#No entiendo
+#Esto genera un experimento de bernouli con probabilidad p.
 def generarBernoulli(p):
     probabilidad_exito = p
-    if (probabilidad_exito < calcularAleatorio()):
+    if (probabilidad_exito > calcularAleatorio()):
         return 1
     else:
         return 0
 
 #2. Utilizando la función del punto anterior, implemente otra que genere un número binomial con los parámetros n,p.
+
+def binomial(n, p):
+    
 
 #3. Utilizando el procedimiento descrito en el capítulo 6 del Dekking (método de la función inversa o de Monte Carlo), imple-
 #mentar una función que permita generar un número aleatorio con distribución E xp(λ).
