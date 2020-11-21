@@ -37,9 +37,7 @@ def generarBinomial(n, p):
 # una función que permita generar un número aleatorio con distribución Exp(λ).
 
 def generarInversa(lambdaExponencial):
-    return (-math.log(1-calcularAleatorio()))/lambdaExponencial
-
-
+    return (-(math.log(1-calcularAleatorio())))/lambdaExponencial
 
 #4. Investigar como generar números aleatorios con distribución normal. Implementarlo.
 
