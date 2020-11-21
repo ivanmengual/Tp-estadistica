@@ -19,6 +19,8 @@ def generarBernoulli(p):
 #2. Utilizando la función del punto anterior, implemente otra que genere un número binomial con los parámetros n,p.
 
 ## devuelve la cantidad de exitos en n experimentos bernoulli
+#p -> probabilidad de exito de un experimento
+#n -> cantidad de experimentos
 def generarBinomial(n, p):
     j = 0
     cant_exitos = 0
@@ -28,16 +30,16 @@ def generarBinomial(n, p):
         j += 1
     return cant_exitos
 
-#p -> probabilidad de exito de un experimento
-#n -> cantidad de experimentos
-
-
 
 #3. Utilizando el procedimiento descrito en el capítulo 6 del Dekking (método de la función inversa o de Monte Carlo), implementar
 # una función que permita generar un número aleatorio con distribución Exp(λ).
 
+#Realiza el calculo de la funcion inversa con un numero aleatorio
 def generarInversa(lambdaExponencial):
     return (-(math.log(1-calcularAleatorio())))/lambdaExponencial
 
 #4. Investigar como generar números aleatorios con distribución normal. Implementarlo.
+
+def generarNormal(media, varianza):
+    return (1/(math.sqrt(2*math.pi*varianza)))*math.e**((-(calcularAleatorio()-media)**2)/2*varianza)
 
