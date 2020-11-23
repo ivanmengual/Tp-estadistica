@@ -56,101 +56,79 @@ def generarNormal(media, varianza):
 
 
 #RV
+
+#Funcion graficar. Recibe a = array de datos , ancho = ancho de barras , titulo del grafico, nombre eje x , nombre eje y
+    
+def graficar(a,ancho,titulo,x,y):
+    #Definir los datos
+    #Defino el rango dentro de los cuales pertenecen los datos. En nuestro caso siempre es [0,1]
+    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+
+    #Configurar las características del gráfico
+    #a = array con todos los datos , b = rango donde caen, histtype = tipo de barra, rwidth = ancho de las barras, color
+    plt.hist(a, b, histtype = 'bar', rwidth = ancho, color = 'red')
+
+    #Definir título y nombres de ejes (los ponemos por parametro)
+    plt.title(titulo)
+    plt.ylabel(y)
+    plt.xlabel(x)
+    #Mostrar figura
+    plt.show()
+
 #2-1 Generar tres muestras de números aleatorios Exp(0,5) de tamaño n = 10, n = 30 y n = 200. Para cada una,
 # computar la media y varianza muestral. ¿Qué observa?
-#2-1 Para las tres muestras anteriores, graficar los histogramas de frecuencias relativas con anchos de banda 0,4, 0,2 y 0,1;
+
+#2-2 Para las tres muestras anteriores, graficar los histogramas de frecuencias relativas con anchos de banda 0,4, 0,2 y 0,1;
 # es decir,un total de 9 histogramas. ¿Qué conclusiones puede obtener?
 
-def DosUno():
 
-    media1 = 0
-    media2 = 0
-    media3 = 0
-    varianza1 = 0
-    varianza2 = 0
-    varianza3 = 0
-    #muestra1 = [0,0000,0,0000,0,0000,0,0000,0,0000,0,0000,0,0000,0,0000,0,0000,0,0000]
+# Como el punto 2-2 pide repetir lo anterior con distintos anchos de banda, creo una funcion general
+def DosUno_Inversa(n,ancho,exp):
+
+    varianza = 0
+    media = 0
     muestra1 = []
-#inserto 0,0000 en los 10 lugares del array
-    for i in range(10):
+    #inserto 0,0000 en los 10 lugares del array
+    for i in range(n):
         muestra1.append(0.0000)
 
-#inserto el calculo generar inversa en cada posición y aprovecho para calcular la media (falta dividir por el total despues)
-    for i in range(0,9):
-        muestra1[i] = float(round(generarInversa(0.5), 4))
-        media1 = media1 + muestra1[i]
+    #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media (falta dividir por el total despues)
+    for i in range(0,n):
+        muestra1[i] = float(round(generarInversa(exp), 4))
+        media = media + muestra1[i]
         print ("Las muestras1 son:", muestra1[i])
-    media1 = media1/10
-#recorro nuevamente para calcular la varianza
-    for i in range(0,9):
-        varianza1 = varianza1 + ((muestra1[i]-media1)**2)
 
-    print("La media de la muestra 1 de numeros aleatorios es:", media1)
-    print("La varianza de la muestra 1 de numeros aleatorios es:", varianza1)
+    media = media/n
+    #recorro nuevamente para calcular la varianza
+    for i in range(0,n):
+        varianza = varianza + ((muestra1[i]-media)**2)
 
-#genero lo mismo anterior pero con cambio de N 30 
-    print("")      
-    muestra2 = []
-    for i in range(30):
-        muestra2.append(0.0000)
-    for i in range(0,29):
-        muestra2[i] = float(round(generarInversa(0.5), 4))
-        media2 = media2 + muestra2[i]
-        #print ("Las muestras2 son:", muestra2[i])
-    media2 = media2/30
-    for i in range(0,29):
-        varianza2 = varianza2 + ((muestra2[i]-media2)**2)
+    print("La media de la muestra 1 de numeros aleatorios es:", media)
+    print("La varianza de la muestra 1 de numeros aleatorios es:", varianza)
 
-    print("La media de la muestra 2 de numeros aleatorios es:", media2)
-    print("La varianza de la muestra 2 de numeros aleatorios es:", varianza2)
+    graficar(muestra1,ancho,"Exponenciales muestra","Limites","Cantidades")
 
-#genero lo mismo anterior pero con cambio de N 200
-    print("")    
-    muestra3 = []
-    for i in range(200):
-        muestra3.append(0.0000)
-    for i in range(0,199):
-        muestra3[i] = float(round(generarInversa(0.5), 4))
-        media3 = media3 + muestra3[i]
-        #print ("Las muestras3 son:", muestra3[i])
-    media3 = media3/200
-    for i in range(0,199):
-        varianza3 = varianza3 + ((muestra3[i]-media3)**2)
-    
-    print("La media de la muestra 3 de numeros aleatorios es:", media3)
-    print("La varianza de la muestra 3 de numeros aleatorios es:", varianza3)
-        
 
-#GRAFICO SOLAMENTE DEL N = 10
-#Definir los datos del eje x
-    b = [0,1,2,3,4,5,6,7,8,9,10]
+# Función que llama a resolver todo el punto 2-2
+def DosUno():
 
-#Configurar las características del gráfico
-    plt.subplot(2,2,1)
-    plt.hist(muestra1, b, histtype = 'bar', rwidth = 0.4, color = 'lightgreen')
+    #genero numero aleatorio con funcion inversa de N10
+    DosUno_Inversa(10,0.4,0.5)
+    DosUno_Inversa(10,0.2,0.5)
+    DosUno_Inversa(10,0.1,0.5)
+   
+    #genero lo mismo anterior pero con cambio de N 30 
+    #DosUno_Inversa(30,0.4,0.5)
+    #DosUno_Inversa(30,0.2,0.5)
+    #DosUno_Inversa(30,0.1,0.5)
 
-#Definir título y nombres de ejes
-    plt.title('Exponenciales Muestra 1')
-    plt.ylabel('Dato obtenido')
-    plt.xlabel('Muestras')
+    #genero lo mismo anterior pero con cambio de N 200
+    #DosUno_Inversa(200,0.4,0.5)
+    #DosUno_Inversa(200,0.2,0.5)
+    #DosUno_Inversa(200,0.1,0.5)
 
-    plt.subplot(2,2,2)
-    plt.hist(muestra1, b, histtype = 'bar', rwidth = 0.2, color = 'lightgreen')
-
-#Definir título y nombres de ejes
-    plt.title('Exponenciales Muestra 1')
-    plt.ylabel('Dato obtenido')
-    plt.xlabel('Muestras')
-
-    plt.subplot(2,2,3)
-    plt.hist(muestra1, b, histtype = 'bar', rwidth = 0.1, color = 'lightgreen')
-       
-#Definir título y nombres de ejes
-    plt.title('Exponenciales Muestra 1')
-    plt.ylabel('Dato obtenido')
-    plt.xlabel('Muestras')
-#Mostrar figura
-    plt.show()
+# TEST del punto 2-1
+#DosUno()
 
 def grafico_test():
 
@@ -170,24 +148,7 @@ def grafico_test():
     plt.show()
 
 #TEST DE GRAFICO
-#DosUno()
 #grafico_test()
-    
-def graficar(a,titulo,x,y):
-    #Definir los datos
-    #Defino el rango dentro de los cuales pertenecen los datos. En nuestro caso siempre es [0,1]
-    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
-
-    #Configurar las características del gráfico
-    #a = array con todos los datos , b = rango donde caen, histtype = tipo de barra, rwidth = ancho de las barras, color
-    plt.hist(a, b, histtype = 'bar', rwidth = 0.8, color = 'red')
-
-    #Definir título y nombres de ejes (los ponemos por parametro)
-    plt.title(titulo)
-    plt.ylabel(y)
-    plt.xlabel(x)
-    #Mostrar figura
-    plt.show()
 
 
 # 2-3 Generar una muestra de números Bin(n=10, p=0,3) de tamaño de la muestra = 50. Construir la función de
@@ -231,19 +192,55 @@ def DosTres():
          print("La muestraaleatoria1 es:", muestraAleatoria1[i])
 
     #grafico
-    graficar(muestraAleatoria1,"Muestra Aleatoria","Cantidad Muestras","Datos Obtenidos")
+    graficar(muestraAleatoria1,0.8,"Muestra Aleatoria","Rango","Cantidad Muestras")
 
-print(calcularAleatorio())
-DosTres()    
+#Test del punto 2-4
+#print(calcularAleatorio())
+#DosTres()    
     
+# 2-5 Repetir el experimento de los dos puntos anteriores con dos muestras aleatorias más generadas con los mismos parámetros.
+# ¿Qué conclusión saca? 
 
+#entiendo que llamando a l funcion anterior 2 veces mas, ya estaría...
+#DosTres() 
+#DosTres()
 
+# 3-1 Generar cuatro muestras de números aleatorios de tamaño 100, todas con distribución binomial con p = 0,40 y n = 10, n = 20,
+# n = 50 y n = 100 respectivamente. Graficar sus histogramas. ¿Qué observa?
 
+def Tres_Uno():
+    
+    # Creo las 4 muestras como array
+    muestraAleatoria1 = []
+    muestraAleatoria2 = []
+    muestraAleatoria3 = []
+    muestraAleatoria4 = []
 
+    # Les asigno 0.000 en todas las posiciones
+    for i in range(100):
+        muestraAleatoria1.append(0.0000)
+    for i in range(100):
+        muestraAleatoria2.append(0.0000)
+    for i in range(100):
+        muestraAleatoria3.append(0.0000)
+    for i in range(100):
+        muestraAleatoria4.append(0.0000)
 
+    # Luego asigno la distribucion binomial en todas las posiciones
+    for i in range(0,100):
+        muestraAleatoria1[i] = float(round(generarBinomial(10,0.4), 4))
+    for i in range(0,100):
+        muestraAleatoria2[i] = float(round(generarBinomial(20,0.4), 4))
+    for i in range(0,100):
+        muestraAleatoria3[i] = float(round(generarBinomial(50,0.4), 4))
+    for i in range(0,100):
+        muestraAleatoria4[i] = float(round(generarBinomial(100,0.4), 4))
 
-
-
+    #grafico histogramas
+    graficar(muestraAleatoria1,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria2,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria3,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria4,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
 
 
 
