@@ -152,14 +152,15 @@ def DosUno():
 #Mostrar figura
     plt.show()
 
-def grafico_test(a,b,titulo,x,y):
+def grafico_test():
 
     #Definir los datos
-    a = [22,55,62,45,21,22,34,42,42,4,2,102,95,85,55,110,120,70,65,55,111,115,80,75,65,54,44,43,42,48]
-    b = [0,1,2,3,4,5,6,7,8,9,10]
+    a = [0.2200,0.5500,0.6200,0.4533,0.2123,0.2211,0.6434,0.5442,0.8340,0.8675]
+    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
 
     #Configurar las características del gráfico
-    plt.hist(a, b, histtype = 'bar', rwidth = 0.8, color = 'lightgreen')
+    plt.hist(a, b, histtype = 'bar', rwidth = 0.4, color = 'lightgreen')
+    #plt.hist(a, b, alpha=1, edgecolor = 'black',  linewidth=1)
 
     #Definir título y nombres de ejes
     plt.title('Exponenciales')
@@ -172,17 +173,16 @@ def grafico_test(a,b,titulo,x,y):
 #DosUno()
 #grafico_test()
     
-def graficar(a,b,titulo,x,y):
+def graficar(a,titulo,x,y):
     #Definir los datos
-    lista = a[0]
-    rango = []
-    for i in range(b):
-        rango.append(i+1)
+    #Defino el rango dentro de los cuales pertenecen los datos. En nuestro caso siempre es [0,1]
+    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
 
     #Configurar las características del gráfico
-    plt.hist(lista, rango, histtype = 'bar', rwidth = 0.8, color = 'lightgreen')
+    #a = array con todos los datos , b = rango donde caen, histtype = tipo de barra, rwidth = ancho de las barras, color
+    plt.hist(a, b, histtype = 'bar', rwidth = 0.8, color = 'red')
 
-    #Definir título y nombres de ejes
+    #Definir título y nombres de ejes (los ponemos por parametro)
     plt.title(titulo)
     plt.ylabel(y)
     plt.xlabel(x)
@@ -203,18 +203,20 @@ def DosTres():
     for i in range(0,49):
         #muestra1[i] = float(round(binomialFormula(i,50,0.3), 4))
         muestra1[i] = float(round(generarBinomial(50,0.3), 4))
-        print ("muestra",muestra1[i])
+        #print ("muestra",muestra1[i])
         empirica[i] = float(round(muestra1[i]/50, 4))
-        print ("empirica",empirica[i])
+        #print ("empirica",empirica[i])
 
-# 2-4
+# 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
+# el método de simulación de la primera parte. Computar la media y varianza muestral y graficar el histograma
+
     muestraAleatoria1 = []
     media1 = 0.000
     varianza1 = 0.0000
     aleatorio = 0.0000
     for i in range(50):
         muestraAleatoria1.append(0.0000)
-    for i in range(0,49):
+    for i in range(0,50):
         aleatorio = calcularAleatorio()
         muestraAleatoria1[i] = aleatorio
         media1 = media1 + muestraAleatoria1[i]
@@ -225,8 +227,11 @@ def DosTres():
     print("La media de la muestra de numeros aleatorios es:", media1)
     print("La varianza de la muestra de numeros aleatorios es:", varianza1)
 
+    for i in range(50):
+         print("La muestraaleatoria1 es:", muestraAleatoria1[i])
+
     #grafico
-    graficar(muestraAleatoria1,50,"Muestra Aleatoria","Cantidad Muestras","Datos Obtenidos")
+    graficar(muestraAleatoria1,"Muestra Aleatoria","Cantidad Muestras","Datos Obtenidos")
 
 print(calcularAleatorio())
 DosTres()    
