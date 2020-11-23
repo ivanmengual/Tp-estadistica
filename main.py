@@ -49,6 +49,9 @@ def binomialFormula(x,n,p):
 def generarInversa(lambdaExponencial):
     return (-(math.log(1-calcularAleatorio())))/lambdaExponencial
 
+def generarInversa2(lambdaExponencial,aleatorio):
+    return (-(1/lambdaExponencial)*math.log(1-aleatorio)) 
+
 #1-4. Investigar como generar números aleatorios con distribución normal. Implementarlo.
 
 def generarNormal(media, varianza):
@@ -59,15 +62,12 @@ def generarNormal(media, varianza):
 
 #Funcion graficar. Recibe a = array de datos , ancho = ancho de barras , titulo del grafico, nombre eje x , nombre eje y
     
-def graficar(a,ancho,titulo,x,y):
+def graficar(a,rango,ancho,titulo,x,y):
     #Definir los datos
-    #Defino el rango dentro de los cuales pertenecen los datos. En nuestro caso siempre es [0,1]
-    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
-
-    #Configurar las características del gráfico
-    #a = array con todos los datos , b = rango donde caen, histtype = tipo de barra, rwidth = ancho de las barras, color
-    plt.hist(a, b, histtype = 'bar', rwidth = ancho, color = 'red')
-
+    #tamaño
+    plt.figure(figsize=(10,10))
+    #rango x e y, tambien ancho de barras.
+    plt.bar(range(0,rango),a,width = ancho)
     #Definir título y nombres de ejes (los ponemos por parametro)
     plt.title(titulo)
     plt.ylabel(y)
@@ -94,7 +94,10 @@ def DosUno_Inversa(n,ancho,exp):
 
     #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media (falta dividir por el total despues)
     for i in range(0,n):
-        muestra1[i] = float(round(generarInversa(exp), 4))
+        a = calcularAleatorio()
+        print ("El aleatorio1 obtenido es:",a)
+        ale = float(round(generarInversa2(exp,a), 4))
+        muestra1[i] = ale
         media = media + muestra1[i]
         print ("Las muestras1 son:", muestra1[i])
 
@@ -106,21 +109,21 @@ def DosUno_Inversa(n,ancho,exp):
     print("La media de la muestra 1 de numeros aleatorios es:", media)
     print("La varianza de la muestra 1 de numeros aleatorios es:", varianza)
 
-    graficar(muestra1,ancho,"Exponenciales muestra","Limites","Cantidades")
+    graficar(muestra1,n,ancho,"Exponenciales muestra","Muestras","Valores")
 
 
 # Función que llama a resolver todo el punto 2-2
 def DosUno():
 
-    #genero numero aleatorio con funcion inversa de N10
-    DosUno_Inversa(10,0.4,0.5)
-    DosUno_Inversa(10,0.2,0.5)
-    DosUno_Inversa(10,0.1,0.5)
+    #genero numero aleatorio con funcion inversa de N 10
+    #DosUno_Inversa(10,0.4,0.5)
+    #DosUno_Inversa(10,0.2,0.5)
+    #DosUno_Inversa(10,0.1,0.5)
    
     #genero lo mismo anterior pero con cambio de N 30 
-    #DosUno_Inversa(30,0.4,0.5)
-    #DosUno_Inversa(30,0.2,0.5)
-    #DosUno_Inversa(30,0.1,0.5)
+    DosUno_Inversa(30,0.4,0.5)
+    DosUno_Inversa(30,0.2,0.5)
+    DosUno_Inversa(30,0.1,0.5)
 
     #genero lo mismo anterior pero con cambio de N 200
     #DosUno_Inversa(200,0.4,0.5)
@@ -128,7 +131,7 @@ def DosUno():
     #DosUno_Inversa(200,0.1,0.5)
 
 # TEST del punto 2-1
-#DosUno()
+DosUno()
 
 def grafico_test():
 
@@ -150,6 +153,26 @@ def grafico_test():
 #TEST DE GRAFICO
 #grafico_test()
 
+def grafico_test2():
+
+    #Definir los datos
+    a = [0.2200,0.5500,0.6200,0.4533,0.2123,0.2211,0.6434,0.5442,0.8340,0.8675]
+    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
+
+
+    plt.figure(figsize=(10,5))
+    plt.bar(range(0,10),a)
+    #Configurar las características del gráfico
+    #plt.hist(a, b, histtype = 'bar', rwidth = 0.4, color = 'lightgreen')
+
+    #Definir título y nombres de ejes
+    plt.title('Exponenciales')
+    plt.ylabel('Función Inversa')
+    plt.xlabel('Muestras')
+    #Mostrar figura
+    plt.show()
+    
+#grafico_test2()
 
 # 2-3 Generar una muestra de números Bin(n=10, p=0,3) de tamaño de la muestra = 50. Construir la función de
 # distribución empírica de dicha muestra.
@@ -192,7 +215,7 @@ def DosTres():
          print("La muestraaleatoria1 es:", muestraAleatoria1[i])
 
     #grafico
-    graficar(muestraAleatoria1,0.8,"Muestra Aleatoria","Rango","Cantidad Muestras")
+    graficar(muestraAleatoria1,50,0.8,"Muestra Aleatoria","Rango","Cantidad Muestras")
 
 #Test del punto 2-4
 #print(calcularAleatorio())
@@ -237,10 +260,10 @@ def Tres_Uno():
         muestraAleatoria4[i] = float(round(generarBinomial(100,0.4), 4))
 
     #grafico histogramas
-    graficar(muestraAleatoria1,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
-    graficar(muestraAleatoria2,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
-    graficar(muestraAleatoria3,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
-    graficar(muestraAleatoria4,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria1,100,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria2,100,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria3,100,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria4,100,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
 
 
 
