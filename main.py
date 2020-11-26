@@ -25,7 +25,7 @@ def generarBernoulli(p):
 
 ## devuelve la cantidad de exitos en n experimentos bernoulli
 #p -> probabilidad de exito de un experimento
-#n -> cantidad de experimentos
+#n -> cantidad de ensayos bernoulli
 def generarBinomial(n, p):
     j = 0
     cant_exitos = 0
@@ -50,7 +50,10 @@ def binomialFormula(x,n,p):
 #Realiza el calculo de la funcion inversa con un numero aleatorio
 def generarInversa(lambdaExponencial):
     aleatorio = calcularAleatorio()
-    return float(round(((-(math.log(1-aleatorio)))/lambdaExponencial),4))
+    print("El numero aleatorio generado es: ", aleatorio)
+    #return float(round(((-(math.log(1-aleatorio)))/lambdaExponencial),4))
+
+    return float(round(((-(math.log(aleatorio)))/lambdaExponencial),4))
 
 def generarInversa3(lambdaExponencial):
     aleatorio = calcularAleatorio()
@@ -82,6 +85,36 @@ def graficar(a,rango,ancho,titulo,x,y):
     #Mostrar figura
     plt.show()
 
+def grafico_histograma(muestra,n,ancho,titulo,x,y):
+
+    #Definir los datos
+    #a = [0.2200,0.5500,0.6200,0.4533,0.2123,0.2211,0.6434,0.5442,0.8340,0.8675]
+    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,
+         1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,
+         2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,
+         3.0,3.1,3.2,3.3,3.4,3.5,3.6,3.7,3.8,3.9,
+         4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,
+         5.0,5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9,
+         6.0,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,
+         7.0,7.1,7.2,7.3,7.4,7.5,7.6,7.7,7.8,7.9,
+         8.0,8.1,8.2,8.3,8.4,8.5,8.6,8.7,8.8,8.9,
+         9.0,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9]
+         
+    
+    #Configurar las características del gráfico
+    plt.hist(muestra, b, histtype = 'bar', rwidth = ancho, color = 'lightgreen')
+    #plt.hist(a, b, alpha=1, edgecolor = 'black',  linewidth=1)
+
+    #Definir título y nombres de ejes
+    plt.title(titulo)
+    plt.ylabel(y)
+    plt.xlabel(x)
+    #Mostrar figura
+    plt.show()
+
+#TEST DE GRAFICO
+#grafico_histograma()
+
 #2-1 Generar tres muestras de números aleatorios Exp(0,5) de tamaño n = 10, n = 30 y n = 200. Para cada una,
 # computar la media y varianza muestral. ¿Qué observa?
 
@@ -104,40 +137,20 @@ def DosUno_Inversa(n,ancho,exp):
 
     #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media 
     for i in range(0,n):
-        aleatorio = generarInversa(exp)
-        muestra[i] = aleatorio
-        media = media + (i)*muestra[i]
+        aleatorio_con_formula_exponencial = generarInversa(exp)
+        muestra[i] = aleatorio_con_formula_exponencial
+        #media = media + (i)*muestra[i]
         print ("Las muestras son:", muestra[i])
 
     #recorro nuevamente para calcular la varianza
     for i in range(0,n):
         varianza = varianza + ((muestra[i]-media)**2)
 
-    print("La media de la muestra 1 de numeros aleatorios es:", float(round(media,4)))
-    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(varianza,4)))
+    print("La media de la muestra 1 de numeros aleatorios es:", float(round(1/exp,4)))
+    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(1/exp**2,4)))
 
-    graficar(muestra,n,ancho,"Exponenciales muestra","Muestras","Valores")
+    grafico_histograma(muestra,n,ancho,"Exponenciales muestra","Muestras","Valores")
 
-
-def grafico_test():
-
-    #Definir los datos
-    a = [0.2200,0.5500,0.6200,0.4533,0.2123,0.2211,0.6434,0.5442,0.8340,0.8675]
-    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,1.0]
-
-    #Configurar las características del gráfico
-    plt.hist(a, b, histtype = 'bar', rwidth = 0.4, color = 'lightgreen')
-    #plt.hist(a, b, alpha=1, edgecolor = 'black',  linewidth=1)
-
-    #Definir título y nombres de ejes
-    plt.title('Exponenciales')
-    plt.ylabel('Función Inversa')
-    plt.xlabel('Muestras')
-    #Mostrar figura
-    plt.show()
-
-#TEST DE GRAFICO
-#grafico_test()
 
 def grafico_test2():
 
@@ -294,12 +307,16 @@ def Tests():
     #1-2
     #Testeo generar binomial
     #habilitar el print de la función bernoulli para ver el aleatorio generado
-    #print("Genero función binomial: ", generarBinomial(2,0.4))
+    print("Genero función binomial: ", generarBinomial(2,0.4))
 
     #1-3
     #Testeo generar inversa
     #lambdaExp = 0.5
-    #print("Genero función exponencial", generarInversa(lambdaExp))
+    #print("Genero función exponencial 1", generarInversa(lambdaExp))
+    #print("Genero función exponencial 2", generarInversa(lambdaExp))
+    #print("Genero función exponencial 3", generarInversa(lambdaExp))
+    #print("Genero función exponencial 4", generarInversa(lambdaExp))
+    #print("Genero función exponencial 5", generarInversa(lambdaExp))
 
     #1-4
     #Testeo generar normal
@@ -323,8 +340,8 @@ def Tests():
     #DosUno_Inversa(30,0.2,0.5)
     #DosUno_Inversa(30,0.1,0.5)
 
-    #genero lo mismo anterior pero con cambio de N 200
-    #DosUno_Inversa(200,0.4,0.5)
+    #genero con cambio de N 200
+    DosUno_Inversa(200,0.4,0.5)
     #DosUno_Inversa(200,0.2,0.5)
     #DosUno_Inversa(200,0.1,0.5)
 
