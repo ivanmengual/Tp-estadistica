@@ -142,13 +142,42 @@ def DosTres():
 
     muestra1 = []
     empirica = []
-    for i in range(50):
+    muestra_ordenada = []
+    for i in range(5):
         muestra1.append(0.0000)
         empirica.append(0.0000)
-    for i in range(0,49):
+        
+    for i in range(0,5):
         muestra1[i] = generarBinomial(10,0.3)
         print ("muestra binomial",muestra1[i])
-        empirica[i] = float(round(muestra1[i]/50, 4))
+
+    #se ordena el array para calcular luego la empirica
+    muestra_ordenada = sorted(muestra1)
+    
+    for j in range(5):
+        print ("muestra binomial ordenada",muestra_ordenada[j])
+
+    suma = 0
+    for i in range(1,5):
+        suma = 0
+        for j in range(1,5):
+            
+            if muestra_ordenada[j] < muestra_ordenada[i]:
+                #    1 3 3 4 7           1 3 3 4 7
+
+                while muestra_ordenada[j] == muestra_ordenada[j+1]:
+                    suma = suma + 1
+                    j = j+1
+                    
+                suma = suma + 1
+                
+        empirica[i] = (suma/5)
+
+    for i in range(0,5):                      
+        print ("muestra empirica",empirica[i])
+
+    #empirica[i] = float(round(muestra1[i]/5, 4))
+    
         #print ("empirica",empirica[i])
 
 # 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
@@ -270,7 +299,7 @@ def Tests():
 
     #2-3
     #genero binomial n=10, p=0.3 - con 50 muestras
-    #DosTres()
+    DosTres()
 
     #2-4
     #Test del punto 2-4
@@ -292,7 +321,7 @@ def Tests():
     #Tres_Uno(20)
 
     #Con N = 50 --------------agrandar eje x porque se va a 20 masomenos
-    Tres_Uno(50)
+    #Tres_Uno(50)
 
     #Con N = 100 -------------agrandar eje x tambien
     #Tres_Uno(100)
