@@ -48,11 +48,40 @@ def generarInversa(lambdaExponencial):
 
 #1-4. Investigar como generar números aleatorios con distribución normal. Implementarlo.
 
-def generarNormal(media, varianza):
-    aleatorio = calcularAleatorio()
-    #print("El numero aleatorio generado es: ", aleatorio)
-    return float(round(((1/(math.sqrt(2*(3.1415)*varianza)))*(2.7182)**((-(aleatorio-media)**2)/2*varianza)),4))
+#def generarNormal2(media, varianza):
+#    aleatorio = calcularAleatorio()
+#    #print("El numero aleatorio generado es: ", aleatorio)
+#    return float(round(((1/(math.sqrt(2*(3.1415)*varianza)))*(2.7182)**((-(aleatorio-media)**2)/2*varianza)),4))
 
+def GenerarNormal(media, varianza):
+
+    u1 = calcularAleatorio()
+    u2 = calcularAleatorio()
+    #print("El numero aleatorio U1 generado es: ", u1)
+    #print("El numero aleatorio U2 generado es: ", u2)
+
+    z = (math.sqrt(-2*(math.pi)*(u1)))*math.cos(math.radians(2*(math.pi)*(u2)))
+
+    return (media + (varianza*z))
+
+def GenerarNormalEjemplo():
+
+    u1 = 0.2841
+    u2 = 0.8336
+    #print("El numero aleatorio U1 generado es: ", u1)
+    #print("El numero aleatorio U2 generado es: ", u2)
+
+    a = ((-2)*(math.log(u1)))
+    b = math.cos(math.radians((2)*(math.pi)*(u2)))
+    
+    print ("resultado a: ", (math.sqrt(a)))
+    print ("resultado b: ", (b))
+    
+    z = ((math.sqrt(a))*(b))
+    print ("resultado z: ", z)
+    result = float(round((168 + (8*z)),4))
+    print ("resultado: ", result)
+    
 
 #RV
 
@@ -75,16 +104,40 @@ def grafico_histograma(muestra,n,ancho,titulo,x,y):
 
     #Definir los datos
     #a = [0.2200,0.5500,0.6200,0.4533,0.2123,0.2211,0.6434,0.5442,0.8340,0.8675]
-    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,
-         1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,
-         2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,
-         3.0,3.1,3.2,3.3,3.4,3.5,3.6,3.7,3.8,3.9,
-         4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,
-         5.0,5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9,
-         6.0,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,
-         7.0,7.1,7.2,7.3,7.4,7.5,7.6,7.7,7.8,7.9,
-         8.0,8.1,8.2,8.3,8.4,8.5,8.6,8.7,8.8,8.9,
-         9.0,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9]
+
+    b = []
+
+    for i in range(0,100):
+        b.append(0.0000)
+    
+    for i in range(0,100):
+
+        if n == 10:
+            b[i]=i/n
+            print ("n = 10: ", b[i])
+
+        if n == 20:
+            b[i]=i/(n/4)
+            print ("n = 20: ", b[i])
+            
+        if n == 50:
+            b[i]=i/(n/25)
+            print ("n = 30: ", b[i])
+
+        if n == 100:
+            b[i]=i/(n/100)
+            print ("n = 10: ", b[i])
+
+#    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,
+#         1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,
+#         2.0,2.1,2.2,2.3,2.4,2.5,2.6,2.7,2.8,2.9,
+#         3.0,3.1,3.2,3.3,3.4,3.5,3.6,3.7,3.8,3.9,
+#         4.0,4.1,4.2,4.3,4.4,4.5,4.6,4.7,4.8,4.9,
+#         5.0,5.1,5.2,5.3,5.4,5.5,5.6,5.7,5.8,5.9,
+#         6.0,6.1,6.2,6.3,6.4,6.5,6.6,6.7,6.8,6.9,
+#         7.0,7.1,7.2,7.3,7.4,7.5,7.6,7.7,7.8,7.9,
+#         8.0,8.1,8.2,8.3,8.4,8.5,8.6,8.7,8.8,8.9,
+#         9.0,9.1,9.2,9.3,9.4,9.5,9.6,9.7,9.8,9.9]
          
     
     #Configurar las características del gráfico
@@ -122,15 +175,21 @@ def DosUno_Inversa(n,ancho,exp):
     for i in range(0,n):
         aleatorio_con_formula_exponencial = generarInversa(exp)
         muestra[i] = aleatorio_con_formula_exponencial
-        #media = media + (i)*muestra[i]
+        media = media + muestra[i]
         print ("Las muestras son:", muestra[i])
+    media = float(round((media/n),4))
 
     #recorro nuevamente para calcular la varianza
-    for i in range(0,n):
-        varianza = varianza + ((muestra[i]-media)**2)
+    for i in range(0,5):
+        
+        a = (muestra[i]-media)
+        
+        varianza = varianza + (a**2)
 
-    print("La media de la muestra 1 de numeros aleatorios es:", float(round(1/exp,4)))
-    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(1/exp**2,4)))
+    varianza = float(round((varianza/n),4))
+
+    print("La media de la muestra 1 de numeros aleatorios es:", media)
+    print("La varianza de la muestra 1 de numeros aleatorios es:", varianza)
 
     grafico_histograma(muestra,n,ancho,"Exponenciales muestra","Muestras","Valores")
 
@@ -138,15 +197,50 @@ def DosUno_Inversa(n,ancho,exp):
 # 2-3 Generar una muestra de números Bin(n=10, p=0,3) de tamaño de la muestra = 50. Construir la función de
 # distribución empírica de dicha muestra.
 
+def DosTres_ejemplo():
+
+    muestra = [5,6,6,7,8]
+    media = 0
+    varianza = 0
+    
+    for i in range(0,5):
+        print ("Las muestras son:", muestra[i])
+        media = media + muestra[i]
+
+    media = media/5
+    
+    for i in range(0,5):
+        
+        a = (muestra[i]-media)
+        
+        varianza = varianza + (a**2)
+
+    varianza = varianza/5
+
+    desviacion_estandar = math.sqrt(varianza)
+
+    print("La media de la muestra 1 de numeros aleatorios es:", float(round(media,2)))
+    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(varianza,2)))
+
+    desviacion_estandar = math.sqrt(varianza)
+
+    print("La desviacion de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
+        
 def DosTres():
 
     muestra1 = []
     empirica = []
+    empirica2 = []
     muestra_ordenada = []
     for i in range(5):
         muestra1.append(0.0000)
-        empirica.append(0.0000)
         
+        empirica2.append(0.0000)
+
+    for i in range(6):
+        empirica.append(0.0000)
+
+    empirica[5]=1.00    
     for i in range(0,5):
         muestra1[i] = generarBinomial(10,0.3)
         print ("muestra binomial",muestra1[i])
@@ -154,27 +248,43 @@ def DosTres():
     #se ordena el array para calcular luego la empirica
     muestra_ordenada = sorted(muestra1)
     
-    for j in range(5):
-        print ("muestra binomial ordenada",muestra_ordenada[j])
+    for j in range(0,5):
+        print ("muestra binomial ordenada ",muestra_ordenada[j])
 
-    suma = 0
-    for i in range(1,5):
-        suma = 0
-        for j in range(1,5):
+    suma = sum(muestra_ordenada)
+
+    print ("La suma es: ", suma)
+
+    empirica2[4]=1.00
+    for j in range(1,4): 
+
+        if muestra_ordenada[j] == muestra_ordenada[j+1]:
+            for j in range(1,j-1):
+                empirica2[j] = empirica2[j]+1/5
+        else:
+            empirica2[j]=(1/5)
             
+    for i in range(0,5):                      
+        print ("muestra empirica 2 : ",empirica2[i])
+    
+    for i in range(1,4):
+        suma = 0
+        for j in range(1,4):
+
+            if muestra_ordenada[i] == muestra_ordenada[i+1]:
+                  
+                i=i+1
+                
             if muestra_ordenada[j] < muestra_ordenada[i]:
                 #    1 3 3 4 7           1 3 3 4 7
 
-                while muestra_ordenada[j] == muestra_ordenada[j+1]:
-                    suma = suma + 1
-                    j = j+1
-                    
                 suma = suma + 1
-                
-        empirica[i] = (suma/5)
+                   
+             
+        empirica[i] = (suma/5) + empirica[i-1]
 
-    for i in range(0,5):                      
-        print ("muestra empirica",empirica[i])
+    for i in range(0,6):                      
+        print ("muestra empirica: ",empirica[i])
 
     #empirica[i] = float(round(muestra1[i]/5, 4))
     
@@ -206,22 +316,40 @@ def DosTres():
 
 def Tres_Uno(n):
 
+
+    media = 0
+    varianza = 0
+    desviacion = 0
     # Creo la muestras como array
     muestraAleatoria1 = []
 
     # Les asigno 0.000 en todas las posiciones
-    for i in range(100):
+    for i in range(n):
         muestraAleatoria1.append(0.0000)
 
     # Luego asigno la distribucion binomial en todas las posiciones
-    for i in range(0,100):
+    for i in range(0,n):
         muestraAleatoria1[i] = generarBinomial(n,0.4)
         print ("muestra binomial",muestraAleatoria1[i])
+        media = media + muestraAleatoria1[i]
+
+    media = float(round((media/n),4))
+
+    for i in range(0,n):
+        
+        a = (muestraAleatoria1[i]-media)
+        
+        varianza = varianza + (a**2)
+
+    varianza = float(round((varianza/n),4))
+    desviacion = float(round(math.sqrt(varianza),4))
     
-    print("La media de la muestra de numeros aleatorios es:", n*0.4)
+    print("La media de la muestra de numeros aleatorios es:", media)
+    print("La desviacion de la muestra de numeros aleatorios es:", desviacion)
+    print("La varianza de la muestra de numeros aleatorios es:", varianza)
 
     #grafico histogramas
-    grafico_histograma(muestraAleatoria1,100,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    grafico_histograma(muestraAleatoria1,n,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
 
 
 def Tres_Dos():
@@ -236,7 +364,7 @@ def Tres_Dos():
     print("La media de la muestra de numeros aleatorios es:", media1)
     print("La varianza de la muestra de numeros aleatorios es:", varianza1)
 
-    graficar(muestraAleatoria1,200,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    graficar(muestraAleatoria1,n,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
     
 
 def Tests():
@@ -299,7 +427,8 @@ def Tests():
 
     #2-3
     #genero binomial n=10, p=0.3 - con 50 muestras
-    DosTres()
+    #DosTres()
+    #DosTres_ejemplo()
 
     #2-4
     #Test del punto 2-4
@@ -315,7 +444,7 @@ def Tests():
 
     #3-1 
     #Con N = 10  ------------ok
-    #Tres_Uno(10)
+    Tres_Uno(10)
 
     #Con N = 20  ------------ok
     #Tres_Uno(20)
@@ -327,8 +456,9 @@ def Tests():
     #Tres_Uno(100)
 
     #3-2
-    #Con 200 muestras
+    #Con 100 muestras (son 100 muestras
     #Tres_Dos()
+    #GenerarNormalEjemplo()
 
     #3-3
 
