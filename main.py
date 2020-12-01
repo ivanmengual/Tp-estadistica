@@ -225,7 +225,37 @@ def DosTres_ejemplo():
     desviacion_estandar = math.sqrt(varianza)
 
     print("La desviacion de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
-        
+
+def generarEmpirica(muestra):
+    funcion_acumulada = []
+    numero_anterior = 0
+    saltos = []
+    altura = 1
+    total_datos = len(muestra)
+    espacios_array = 0
+  
+    while espacios_array < total_datos + 1:
+        funcion_acumulada.append(0.0000)
+        saltos.append(0)
+        espacios_array += 1
+
+
+    for i in range(0,total_datos):
+        if muestra[i] != numero_anterior:
+            numero_anterior = muestra[i]
+            saltos[i] = altura
+
+        else:
+            numero_anterior = muestra[i]
+            altura += 1
+            saltos.pop(i - 1)
+
+    for i in range(0,total_datos):
+        funcion_acumulada[i + 1] = (saltos[i])/total_datos
+    #cada valor de la funcion acumulada es un "salto" en la muestra
+    return funcion_acumulada
+
+
 def DosTres():
 
     muestra1 = []
@@ -251,6 +281,12 @@ def DosTres():
     for j in range(0,5):
         print ("muestra binomial ordenada ",muestra_ordenada[j])
 
+    laEmpirica = generarEmpirica(muestra_ordenada)
+
+    for i in range(0,6):
+        print ("la funcion Empirica con n:", i)
+        print ("Es: ", laEmpirica[i])
+"""
     suma = sum(muestra_ordenada)
 
     print ("La suma es: ", suma)
@@ -313,7 +349,7 @@ def DosTres():
 
 # 3-1 Generar cuatro muestras de números aleatorios de tamaño 100, todas con distribución binomial con p = 0,40 y n = 10, n = 20,
 # n = 50 y n = 100 respectivamente. Graficar sus histogramas. ¿Qué observa?
-
+"""
 def Tres_Uno(n):
 
 
@@ -427,7 +463,7 @@ def Tests():
 
     #2-3
     #genero binomial n=10, p=0.3 - con 50 muestras
-    #DosTres()
+    DosTres()
     #DosTres_ejemplo()
 
     #2-4
@@ -444,7 +480,7 @@ def Tests():
 
     #3-1 
     #Con N = 10  ------------ok
-    Tres_Uno(10)
+    #Tres_Uno(10)
 
     #Con N = 20  ------------ok
     #Tres_Uno(20)
