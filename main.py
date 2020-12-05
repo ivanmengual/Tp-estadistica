@@ -344,7 +344,21 @@ def Tres_Dos():
     print("La varianza de la muestra de numeros aleatorios es:", varianza1)
 
     graficar(muestraAleatoria1,n,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+
+#3-3 Para cada una de las muestras anteriores, calcule la media muestral. Justifique lo que observa.
+
+#4-1 Generar dos muestras N(100, 5), una de tamaño n = 10 y otra de tamaño n = 30. Obtener estimaciones puntuales de su media
+#y varianza.
     
+#4-2 Suponga que ya conoce el dato de que la distribución tiene varianza 5. Obtener intervalos de confianza del 95% y 98% para
+#la media de ambas muestras.
+
+#4-3 Repita el punto anterior pero usando la varianza estimada s^2, para la muestra de tamaño adecuado.
+
+#4-4 Probar a nivel 0,99 la hipótesis de que la varianza sea σ^2 > 5. 
+# Calcular la probabilidad de cometer error tipo II para la hipótesis alternativa σ^2 = 6.
+
+#4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
 
 def Tests():
 
