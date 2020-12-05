@@ -199,23 +199,23 @@ def DosUno_Inversa(n,ancho,exp):
 
 def DosTres_ejemplo():
 
-    muestra = [5,6,6,7,8]
+    muestra = []
     media = 0
     varianza = 0
     
-    for i in range(0,5):
-        print ("Las muestras son:", muestra[i])
+    for i in range(0,50):
+        muestra.append(generarBinomial(10, 0.3))
         media = media + muestra[i]
 
-    media = media/5
+    media = media/50
     
-    for i in range(0,5):
+    for i in range(0,50):
         
         a = (muestra[i]-media)
         
         varianza = varianza + (a**2)
 
-    varianza = varianza/5
+    varianza = varianza/50
 
     desviacion_estandar = math.sqrt(varianza)
 
@@ -225,34 +225,51 @@ def DosTres_ejemplo():
     desviacion_estandar = math.sqrt(varianza)
 
     print("La desviacion de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
-
+    empirica = generarEmpirica(sorted(muestra))
+    variables = sorted(set(muestra))
+    #Borra las variables repetidas
+    empirica_limpia = sorted(set(empirica))
+    
+    for i in range(0,len(empirica_limpia)):
+       
+        print ("Para x > ", variables[i])
+        print ("F(x) es: ",empirica_limpia[i])
+    
 def generarEmpirica(muestra):
     funcion_acumulada = []
     numero_anterior = 0
     saltos = []
     altura = 1
-    total_datos = len(muestra)
+    total_datos = len(muestra) #5 con el array hardcodeado
     espacios_array = 0
-  
-    while espacios_array < total_datos + 1:
+    
+    while espacios_array < total_datos:
         funcion_acumulada.append(0.0000)
         saltos.append(0)
-        espacios_array += 1
-
-
+        espacios_array += 1#Sale con 6 
+        
     for i in range(0,total_datos):
-        if muestra[i] != numero_anterior:
+        if i == 0:
             numero_anterior = muestra[i]
             saltos[i] = altura
-
+            funcion_acumulada[i] = (saltos[i])/total_datos
+        elif muestra[i] == numero_anterior:
+            aux = numero_anterior
+            cant_repetidos = 1
+            altura += 1
+            saltos[i] = altura
+            funcion_acumulada[i] = (saltos[i])/total_datos
+            while aux == numero_anterior:
+                funcion_acumulada[i - cant_repetidos] = (saltos[i])/total_datos    
+                cant_repetidos += 1
+                aux = muestra[i - cant_repetidos]
         else:
             numero_anterior = muestra[i]
             altura += 1
-            saltos.pop(i - 1)
-
-    for i in range(0,total_datos):
-        funcion_acumulada[i + 1] = (saltos[i])/total_datos
-    #cada valor de la funcion acumulada es un "salto" en la muestra
+            saltos[i] = altura
+            funcion_acumulada[i] = (saltos[i])/total_datos
+  
+ #   funcion_acumulada.pop(len(funcion_acumulada) - 1)
     return funcion_acumulada
 
 
@@ -278,53 +295,18 @@ def DosTres():
     #se ordena el array para calcular luego la empirica
     muestra_ordenada = sorted(muestra1)
     
-    for j in range(0,5):
+    for j in muestra_ordenada:
         print ("muestra binomial ordenada ",muestra_ordenada[j])
 
     laEmpirica = generarEmpirica(muestra_ordenada)
 
-    for i in range(0,6):
+    for i in range(0,5):
         print ("la funcion Empirica con n:", i)
         print ("Es: ", laEmpirica[i])
-"""
+
     suma = sum(muestra_ordenada)
 
     print ("La suma es: ", suma)
-
-    empirica2[4]=1.00
-    for j in range(1,4): 
-
-        if muestra_ordenada[j] == muestra_ordenada[j+1]:
-            for j in range(1,j-1):
-                empirica2[j] = empirica2[j]+1/5
-        else:
-            empirica2[j]=(1/5)
-            
-    for i in range(0,5):                      
-        print ("muestra empirica 2 : ",empirica2[i])
-    
-    for i in range(1,4):
-        suma = 0
-        for j in range(1,4):
-
-            if muestra_ordenada[i] == muestra_ordenada[i+1]:
-                  
-                i=i+1
-                
-            if muestra_ordenada[j] < muestra_ordenada[i]:
-                #    1 3 3 4 7           1 3 3 4 7
-
-                suma = suma + 1
-                   
-             
-        empirica[i] = (suma/5) + empirica[i-1]
-
-    for i in range(0,6):                      
-        print ("muestra empirica: ",empirica[i])
-
-    #empirica[i] = float(round(muestra1[i]/5, 4))
-    
-        #print ("empirica",empirica[i])
 
 # 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
 # el método de simulación de la primera parte. Computar la media y varianza muestral y graficar el histograma
@@ -349,7 +331,7 @@ def DosTres():
 
 # 3-1 Generar cuatro muestras de números aleatorios de tamaño 100, todas con distribución binomial con p = 0,40 y n = 10, n = 20,
 # n = 50 y n = 100 respectivamente. Graficar sus histogramas. ¿Qué observa?
-"""
+
 def Tres_Uno(n):
 
 
@@ -463,8 +445,8 @@ def Tests():
 
     #2-3
     #genero binomial n=10, p=0.3 - con 50 muestras
-    DosTres()
-    #DosTres_ejemplo()
+    #DosTres()
+    DosTres_ejemplo()
 
     #2-4
     #Test del punto 2-4
