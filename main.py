@@ -196,45 +196,6 @@ def DosUno_Inversa(n,ancho,exp):
 
 # 2-3 Generar una muestra de números Bin(n=10, p=0,3) de tamaño de la muestra = 50. Construir la función de
 # distribución empírica de dicha muestra.
-
-def DosTres_ejemplo():
-
-    muestra = []
-    media = 0
-    varianza = 0
-    
-    for i in range(0,50):
-        muestra.append(generarBinomial(10, 0.3))
-        media = media + muestra[i]
-
-    media = media/50
-    
-    for i in range(0,50):
-        
-        a = (muestra[i]-media)
-        
-        varianza = varianza + (a**2)
-
-    varianza = varianza/50
-
-    desviacion_estandar = math.sqrt(varianza)
-
-    print("La media de la muestra 1 de numeros aleatorios es:", float(round(media,2)))
-    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(varianza,2)))
-
-    desviacion_estandar = math.sqrt(varianza)
-
-    print("La desviacion de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
-    empirica = generarEmpirica(sorted(muestra))
-    variables = sorted(set(muestra))
-    #Borra las variables repetidas
-    empirica_limpia = sorted(set(empirica))
-    
-    for i in range(0,len(empirica_limpia)):
-       
-        print ("Para x > ", variables[i])
-        print ("F(x) es: ",empirica_limpia[i])
-    
 def generarEmpirica(muestra):
     funcion_acumulada = []
     numero_anterior = 0
@@ -268,65 +229,65 @@ def generarEmpirica(muestra):
             altura += 1
             saltos[i] = altura
             funcion_acumulada[i] = (saltos[i])/total_datos
-  
- #   funcion_acumulada.pop(len(funcion_acumulada) - 1)
+
     return funcion_acumulada
+
 
 
 def DosTres():
 
-    muestra1 = []
-    empirica = []
-    empirica2 = []
-    muestra_ordenada = []
-    for i in range(5):
-        muestra1.append(0.0000)
-        
-        empirica2.append(0.0000)
-
-    for i in range(6):
-        empirica.append(0.0000)
-
-    empirica[5]=1.00    
-    for i in range(0,5):
-        muestra1[i] = generarBinomial(10,0.3)
-        print ("muestra binomial",muestra1[i])
-
-    #se ordena el array para calcular luego la empirica
-    muestra_ordenada = sorted(muestra1)
+    muestra = []
+    media = 0
+    varianza = 0
     
-    for j in muestra_ordenada:
-        print ("muestra binomial ordenada ",muestra_ordenada[j])
+    for i in range(0,50):
+        muestra.append(generarBinomial(10, 0.3))
+        media = media + muestra[i]
 
-    laEmpirica = generarEmpirica(muestra_ordenada)
+    media = media/50
+    
+    for i in range(0,50):
+        
+        a = (muestra[i]-media)
+        
+        varianza = varianza + (a**2)
 
-    for i in range(0,5):
-        print ("la funcion Empirica con n:", i)
-        print ("Es: ", laEmpirica[i])
+    varianza = varianza/50
 
-    suma = sum(muestra_ordenada)
+    desviacion_estandar = math.sqrt(varianza)
 
-    print ("La suma es: ", suma)
+    print("La media de la muestra 1 de numeros aleatorios es:", float(round(media,2)))
+    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(varianza,2)))
 
+    desviacion_estandar = math.sqrt(varianza)
+
+    print("La desviacion de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
+    empirica = generarEmpirica(sorted(muestra))
+    variables = sorted(set(muestra))
+    #Borra las variables repetidas
+    empirica_limpia = sorted(set(empirica))
+
+    for i in range(0, len(muestra)):
+        print(muestra[i])
+
+    for i in range(0,len(empirica_limpia)):
+       
+        print ("Para x > ", variables[i])
+        print ("F(x) es: ",empirica_limpia[i])
+    
+
+ 
 # 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
 # el método de simulación de la primera parte. Computar la media y varianza muestral y graficar el histograma
 
-    muestraAleatoria1 = []
-    
-    for i in range(50):
-        muestraAleatoria1.append(0.0000)
-    for i in range(0,50):
-        aleatorio = calcularAleatorio()
-        muestraAleatoria1[i] = aleatorio
-        
+def DosCuatro(muestra):
+  
+    #ESTO SEGURO TA MAL
     print("La media de la muestra de numeros aleatorios es:", 10*0.3)
     print("La varianza de la muestra de numeros aleatorios es:", float(round(((10*0.3)*(1-0.3)),4)))
 
-    #for i in range(50):
-    #     print("La muestraaleatoria1 es:", muestraAleatoria1[i])
-
     #grafico
-    grafico_histograma(muestra1,50,0.8,"Muestra binomial","Rango","Cantidad Muestras")
+    grafico_histograma(muestra,50,0.8,"Muestra binomial","Rango","Cantidad Muestras")
 
 
 # 3-1 Generar cuatro muestras de números aleatorios de tamaño 100, todas con distribución binomial con p = 0,40 y n = 10, n = 20,
@@ -445,12 +406,11 @@ def Tests():
 
     #2-3
     #genero binomial n=10, p=0.3 - con 50 muestras
-    #DosTres()
-    DosTres_ejemplo()
+    DosTres()
 
     #2-4
     #Test del punto 2-4
-    #DosTres()    
+    #DosCuatro()    
 
     #2-5
     #entiendo que llamando a l funcion anterior 2 veces mas, ya estaría...
