@@ -237,31 +237,6 @@ def generarEmpirica(muestra):
 def DosTres():
 
     muestra = []
-    media = 0
-    varianza = 0
-    
-    for i in range(0,50):
-        muestra.append(generarBinomial(10, 0.3))
-        media = media + muestra[i]
-
-    media = media/50
-    
-    for i in range(0,50):
-        
-        a = (muestra[i]-media)
-        
-        varianza = varianza + (a**2)
-
-    varianza = varianza/50
-
-    desviacion_estandar = math.sqrt(varianza)
-
-    print("La media de la muestra 1 de numeros aleatorios es:", float(round(media,2)))
-    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(varianza,2)))
-
-    desviacion_estandar = math.sqrt(varianza)
-
-    print("La desviacion de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
     empirica = generarEmpirica(sorted(muestra))
     variables = sorted(set(muestra))
     #Borra las variables repetidas
@@ -280,14 +255,38 @@ def DosTres():
 # 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
 # el método de simulación de la primera parte. Computar la media y varianza muestral y graficar el histograma
 
-def DosCuatro(muestra):
-  
-    #ESTO SEGURO TA MAL
-    print("La media de la muestra de numeros aleatorios es:", 10*0.3)
-    print("La varianza de la muestra de numeros aleatorios es:", float(round(((10*0.3)*(1-0.3)),4)))
+def CalcularMedia(muestra):
+    media = 0
+    for i in range(0,50):
+        muestra.append(generarBinomial(10, 0.3))
+        media = media + muestra[i]
+    media = media/50
 
+    return media
+
+def CalcularVarianza(muestra):
+    media = CalcularMedia(muestra)
+    varianza = 0
+    for i in range(0,50):        
+        a = (muestra[i]-media)        
+        varianza = varianza + (a**2)
+    varianza = varianza/50
+
+    return varianza
+
+def DosCuatro(muestra):
+
+    media = CalcularMedia(muestra)
+    varianza = CalcularVarianza(muestra)
+
+    desviacion_estandar = math.sqrt(varianza)
+
+    print("La media de la muestra 1 de numeros aleatorios es:", float(round(media,2)))
+    print("La varianza de la muestra 1 de numeros aleatorios es:", float(round(varianza,2)))
+    print("La desviacion estandar de la muestra 1 de numeros aleatorios es:", float(round(desviacion_estandar,2)))
+  
     #grafico
-    grafico_histograma(muestra,50,0.8,"Muestra binomial","Rango","Cantidad Muestras")
+    grafico_histograma(muestra,10,0.8,"Muestra binomial","Rango","Cantidad Muestras")
 
 
 # 3-1 Generar cuatro muestras de números aleatorios de tamaño 100, todas con distribución binomial con p = 0,40 y n = 10, n = 20,
