@@ -53,16 +53,30 @@ def generarInversa(lambdaExponencial):
 #    #print("El numero aleatorio generado es: ", aleatorio)
 #    return float(round(((1/(math.sqrt(2*(3.1415)*varianza)))*(2.7182)**((-(aleatorio-media)**2)/2*varianza)),4))
 
-def GenerarNormal(media, varianza):
+def GenerarNormal(media, varianza,n):
 
     u1 = calcularAleatorio()
     u2 = calcularAleatorio()
     #print("El numero aleatorio U1 generado es: ", u1)
     #print("El numero aleatorio U2 generado es: ", u2)
 
-    z = (math.sqrt(-2*(math.pi)*(u1)))*math.cos(math.radians(2*(math.pi)*(u2)))
+    #z = (math.sqrt(-2*(math.pi)*(u1)))*math.cos(math.radians(2*(math.pi)*(u2)))
 
-    return (media + (varianza*z))
+    a = ((-2)*(math.log(u1)))
+    b = math.cos(math.radians((2)*(math.pi)*(u2)))
+    c = math.sin(math.radians((2)*(math.pi)*(u2)))
+    
+    if n % 2 == 0:
+        
+        z = ((math.sqrt(a))*(c))
+        result = float(round((media + (varianza*z)),4))
+        print ("resultado: ", result)
+        return (media + (varianza*z))
+
+    z = ((math.sqrt(a))*(b))
+    result = float(round((media + (varianza*z)),4))
+    print ("resultado: ", result)
+    return (media + (varianza*z)) 
 
 def GenerarNormalEjemplo():
 
@@ -82,8 +96,44 @@ def GenerarNormalEjemplo():
     result = float(round((168 + (8*z)),4))
     print ("resultado: ", result)
     
+def estandarizar(muestra,n,media,varianza):
+    
+    #   Z = (X - mu)/sigma
+    
+    b = []
 
-#RV
+    for i in range(0,n):
+        b.append(0.0000)
+
+    for i in range(0,n):
+        b[i] = ((muestra[i] - media) / (varianza))   
+
+    return b
+
+def CalcularMedia(muestra,n):
+
+    #Media muestral: xn ’ = 1/n * sum_1ton (x_i)
+
+    media = 0
+    for i in range(0,n):
+        media = media + muestra[i]
+    media = media/n
+
+    return float(round(media,4))
+
+def CalcularVarianza(muestra,n):
+
+    #Varianza muestral: s² = 1/(n - 1) * sum_1ton (x_i - x’)²
+    
+    media = CalcularMedia(muestra,n)
+    varianza = 0
+    for i in range(0,n):        
+        a = (muestra[i]-media)        
+        varianza = varianza + (a**2)
+    varianza = varianza/n
+
+    return float(round(varianza,4))
+
 
 #Funcion graficar. Recibe a = array de datos , rango = numero de muestas, ancho = ancho de barras , titulo del grafico, nombre eje x , nombre eje y
     
@@ -162,10 +212,29 @@ def grafico_histograma(muestra,n,ancho,titulo,x,y):
 # Recibe como parametros n = cantidad de muestas, ancho = ancho de las barras del grafico,
 # exp = lamda exponencial de la funcion
 
+def histograma(sample, gaps, relative=False):
+    """
+    Graficador de histogramas por ancho de bandas
+
+    :param sample: muestra a graficar
+    :type sample: List
+    :param gaps: listado de anchos de banda para las clases
+    :type gaps: List[float]
+    :param relative: transforma los pesos en relativos, default to False
+    :type relative: bool
+    """
+    weights = [1/len(sample) for a in sample] if relative else None
+    a, p = plot.subplots(1, len(gaps))
+    p = [p] if len(gaps) == 1 else p
+    for i, gap in enumerate(gaps):
+        p[i].hist(sample, \
+                arange(min(sample), max(sample) + gap, gap), weights=weights)
+    plot.figure(num=1, figsize=(8, 18))
+    plot.subplots_adjust(wspace=0.5)
+    plot.show()
+
 def DosUno_Inversa(n,ancho,exp):
 
-    varianza = 0
-    media = 0
     muestra = []
     #inserto 0,0000 en los 10 lugares del array
     for i in range(n):
@@ -175,18 +244,12 @@ def DosUno_Inversa(n,ancho,exp):
     for i in range(0,n):
         aleatorio_con_formula_exponencial = generarInversa(exp)
         muestra[i] = aleatorio_con_formula_exponencial
-        media = media + muestra[i]
+        
         print ("Las muestras son:", muestra[i])
-    media = float(round((media/n),4))
+    
+    media = CalcularMedia(muestra,n)
 
-    #recorro nuevamente para calcular la varianza
-    for i in range(0,5):
-        
-        a = (muestra[i]-media)
-        
-        varianza = varianza + (a**2)
-
-    varianza = float(round((varianza/n),4))
+    varianza = CalcularVarianza(muestra,n)
 
     print("La media de la muestra 1 de numeros aleatorios es:", media)
     print("La varianza de la muestra 1 de numeros aleatorios es:", varianza)
@@ -255,29 +318,10 @@ def DosTres():
 # 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
 # el método de simulación de la primera parte. Computar la media y varianza muestral y graficar el histograma
 
-def CalcularMedia(muestra):
-    media = 0
-    for i in range(0,50):
-        muestra.append(generarBinomial(10, 0.3))
-        media = media + muestra[i]
-    media = media/50
-
-    return media
-
-def CalcularVarianza(muestra):
-    media = CalcularMedia(muestra)
-    varianza = 0
-    for i in range(0,50):        
-        a = (muestra[i]-media)        
-        varianza = varianza + (a**2)
-    varianza = varianza/50
-
-    return varianza
-
 def DosCuatro(muestra):
 
-    media = CalcularMedia(muestra)
-    varianza = CalcularVarianza(muestra)
+    media = CalcularMedia(muestra,n)
+    varianza = CalcularVarianza(muestra,n)
 
     desviacion_estandar = math.sqrt(varianza)
 
@@ -294,10 +338,6 @@ def DosCuatro(muestra):
 
 def Tres_Uno(n):
 
-
-    media = 0
-    varianza = 0
-    desviacion = 0
     # Creo la muestras como array
     muestraAleatoria1 = []
 
@@ -309,17 +349,11 @@ def Tres_Uno(n):
     for i in range(0,n):
         muestraAleatoria1[i] = generarBinomial(n,0.4)
         print ("muestra binomial",muestraAleatoria1[i])
-        media = media + muestraAleatoria1[i]
 
-    media = float(round((media/n),4))
+    media = CalcularMedia(muestraAleatoria1,n)
 
-    for i in range(0,n):
-        
-        a = (muestraAleatoria1[i]-media)
-        
-        varianza = varianza + (a**2)
+    varianza = CalcularVarianza(muestraAleatoria1,n)
 
-    varianza = float(round((varianza/n),4))
     desviacion = float(round(math.sqrt(varianza),4))
     
     print("La media de la muestra de numeros aleatorios es:", media)
@@ -346,41 +380,105 @@ def Tres_Dos():
 
 #3-3 Para cada una de las muestras anteriores, calcule la media muestral. Justifique lo que observa.
 
+
+
 #4-1 Generar dos muestras N(100, 5), una de tamaño n = 10 y otra de tamaño n = 30. Obtener estimaciones puntuales de su media
 #y varianza.
+
+def Cuatro_Uno():
+
+    muestra10 = []
+    for i in range(10):
+        muestra10.append(0.0000)
+    for i in range(0,10):
+        muestra10[i] = float(round(GenerarNormal(100,5,10), 4))
+
+    media10 = CalcularMedia(muestra10,10)
+    varianza10 = CalcularVarianza(muestra10,10)
+    
+    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=10:", media10)
+    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=10:", varianza10)
+
+    muestra30 = []
+    for i in range(30):
+        muestra30.append(0.0000)
+    for i in range(0,30):
+        muestra30[i] = float(round(GenerarNormal(100,5,30), 4))
+
+    media30 = CalcularMedia(muestra30,30)
+    varianza30 = CalcularVarianza(muestra30,30)
+    
+    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
+    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
+
+    
     
 #4-2 Suponga que ya conoce el dato de que la distribución tiene varianza 5. Obtener intervalos de confianza del 95% y 98% para
 #la media de ambas muestras.
+
+    
+
+    
 
 #4-3 Repita el punto anterior pero usando la varianza estimada s^2, para la muestra de tamaño adecuado.
 
 #4-4 Probar a nivel 0,99 la hipótesis de que la varianza sea σ^2 > 5. 
 # Calcular la probabilidad de cometer error tipo II para la hipótesis alternativa σ^2 = 6.
 
+#calulamos el limite inferior de la varianza con el estimador chi-cuadrado
+#probar hipotesis
+
+def Cuatro_Cuatro():
+    
+    #x_raya = calular_media_muestral(30, muestra)
+    #sumatoria = calcualr_sumatoria_al_cuadrado(muestra, x_raya,30)
+    #s = sumatoria /(len(muestra)-1)
+
+#calculamos el limite inferior de la varianza con el estimador chi-cuadrado
+    #chi-cuadrado = chi2.ppf(0,99, len(muestra) -1)
+    #varinza = (len(muestra) - 1 * s / chi_cuadrado
+
+    #if varianza < 5:
+        print ("la varianza con el estimador es", float(round(varianza,3)), " , porq lo que la hipotesis de la varianza mayor a 4 es falsa")
+           
+#caluclar la probabilidad de cometer error tipo 2
+#calcular varianza muestral limite
+
+    #varianza muestreal limite = chi_cuadrado * 5 / (len(muestra)-1)
+    #nuevo_chi_cuadrado = (len(muestra) - 1) * varianza_muestral_limite / 6
+
+#calculo la probabilidad de que el estadistico de prueba chi-cuadrado sea mayor al nuevo chi-cuadrado
+    #print(1-chi2.cdf(nuevo_chi_cuadrado,29))
+    #print ("la probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
+        
+
 #4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
+
+    
+
 
 def Tests():
 
-    #1--------------------------------
+    #1
 
     #1-1
-    #Testeo generar aleatorio   ---------------------------------------------ok
+    #Testeo generar aleatorio   
     #print ("Calculo Aleatorio 1: ",calcularAleatorio())
     #print ("Calculo Aleatorio 2: ",calcularAleatorio())
     #print ("Calculo Aleatorio 3: ",calcularAleatorio())
     #print ("Calculo Aleatorio 4: ",calcularAleatorio())
     #print ("Calculo Aleatorio 5: ",calcularAleatorio())
 
-    #Testeo generar bernoulli   ----------------------------------------------ok
+    #Testeo generar bernoulli   
     #habilitar el print de la función para ver el aleatorio generado
     #print("Genero función bernoulli", generarBernoulli(0.3))
 
-    #1-2 ---------------------------------------------------------------------ok
+    #1-2 
     #Testeo generar binomial    
     #habilitar el print de la función bernoulli para ver el aleatorio generado
     #print("Genero función binomial: ", generarBinomial(2,0.4))
 
-    #1-3  ---------------------------------------------------------------------ok
+    #1-3  
     #Testeo generar inversa
     #lambdaExp = 0.5
     #print("Genero función exponencial 1", generarInversa(lambdaExp))
@@ -400,7 +498,7 @@ def Tests():
 
     
 
-    #2-1 y 2-2     -------------------------------------------------------------ok - falta que los histogramas se muestren los 9 al mismo tiempo
+    #2-1 y 2-2     
     #genero numero aleatorio con funcion inversa de N 10
     #DosUno_Inversa(10,0.4,0.5)
     #DosUno_Inversa(10,0.2,0.5)
@@ -419,7 +517,7 @@ def Tests():
 
     #2-3
     #genero binomial n=10, p=0.3 - con 50 muestras
-    DosTres()
+    #DosTres()
 
     #2-4
     #Test del punto 2-4
@@ -434,16 +532,16 @@ def Tests():
     #3---------------------------------
 
     #3-1 
-    #Con N = 10  ------------ok
+    #Con N = 10 
     #Tres_Uno(10)
 
-    #Con N = 20  ------------ok
+    #Con N = 20  
     #Tres_Uno(20)
 
-    #Con N = 50 --------------agrandar eje x porque se va a 20 masomenos
+    #Con N = 50 
     #Tres_Uno(50)
 
-    #Con N = 100 -------------agrandar eje x tambien
+    #Con N = 100 
     #Tres_Uno(100)
 
     #3-2
@@ -457,6 +555,7 @@ def Tests():
     #4---------------------------------
 
     #4-1
+    Cuatro_Uno()
 
     #4-2
 
