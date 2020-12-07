@@ -3,6 +3,7 @@ import random
 import math
 import matplotlib.pyplot as plt
 import numpy as np # Importamos numpy como el alias np
+from scipy.stats import chi2
 
 #1-1. Utilizando únicamente la función random de su lenguaje (la función que genera un número aleatorio uniforme entre 0 y 1),
 def calcularAleatorio():
@@ -144,6 +145,7 @@ def CalcularVarianza(muestra,n):
     
     media = CalcularMedia(muestra,n)
     varianza = 0
+
     for i in range(0,n):        
         a = (muestra[i]-media)        
         varianza = varianza + (a**2)
@@ -474,20 +476,6 @@ def Cuatro_Dos():
     print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
     print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
 
-
-    #Z = (XRAYA - media) / (varianza/math.sqrt(n))
-    #Z = ((XRAYA - media)*math.sqrt(n)) / (varianza)
-
-    #alpha = 0.05
-
-    #Z10 = ((media10 - 100)*math.sqrt(n)) / (varianza)
-    #este valor se saca por tabla
-    #Z10 = 1.96
-    #P(-z=<Z=<z)= 0.95
-
-    #Z30 = ((media30 - 100)*math.sqrt(n)) / (varianza)
-
-
     #resuelto
     cota_inferior = ((media10)-(1.96)*(math.sqrt(5)/math.sqrt(10)))
     cota_superior = ((media10)+(1.96)*(math.sqrt(5)/math.sqrt(10)))
@@ -516,12 +504,58 @@ def Cuatro_Dos():
 
 #4-3 Repita el punto anterior pero usando la varianza estimada s^2, para la muestra de tamaño adecuado.
 
-#def Cuatro_Tres():
+def Cuatro_Tres():
 
+    muestra10 = []
+    muestra10 = normal_boxmuller(100,math.sqrt(5),10)
+    
+    muestra30 = []
+    muestra30 = normal_boxmuller(100,math.sqrt(5),30)
 
+    #cuasi desviacion estandar tipica muestral = Raiz de la varianza2 (n-1)
 
+    media10 = CalcularMedia(muestra10,10)
+    varianza10 = CalcularVarianza2(muestra10,10)
+    desviacion10 = math.sqrt(CalcularVarianza2(muestra10,10))
 
+    print("")
+    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=10:", media10)
+    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza10)
+    print("la desviacion muestral (o s2) es un estimador insesgado de la varianza n=10:", desviacion10)
+    print("")
 
+    media30 = CalcularMedia(muestra30,30)
+    varianza30 = CalcularVarianza2(muestra30,30)
+    desviacion30 = math.sqrt(CalcularVarianza2(muestra30,30))
+    
+    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
+    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
+    print("la desviacion muestral (o s2) es un estimador insesgado de la varianza n=30:", desviacion30)
+    
+    cota_inferior = ((media10)-(2.262)*(math.sqrt(desviacion10)/math.sqrt(10)))
+    cota_superior = ((media10)+(2.262)*(math.sqrt(desviacion10)/math.sqrt(10)))
+    print("")
+    print("95% cota inferior de muestra 10:", cota_inferior)
+    print("95% cota superior de muestra 10:", cota_superior)
+    print("")
+    
+    cota_inferior = ((media10)-(2.821)*(math.sqrt(desviacion30)/math.sqrt(10)))
+    cota_superior = ((media10)+(2.821)*(math.sqrt(desviacion30)/math.sqrt(10)))
+    print("98% cota inferior de muestra 10:", cota_inferior)
+    print("98% cota superior de muestra 10:", cota_superior)
+    print("")
+    
+    cota_inferior = ((media30)-(2.045)*(math.sqrt(5)/math.sqrt(30)))
+    cota_superior = ((media30)+(2.045)*(math.sqrt(5)/math.sqrt(30)))
+    print("95% cota inferior de muestra 30:", cota_inferior)
+    print("95% cota superior de muestra 30:", cota_superior)
+    print("")
+    
+    cota_inferior = ((media30)-(2.462)*(math.sqrt(5)/math.sqrt(30)))
+    cota_superior = ((media30)+(2.462)*(math.sqrt(5)/math.sqrt(30)))
+    print("98% cota inferior de muestra 30:", cota_inferior)
+    print("98% cota superior de muestra 30:", cota_superior)    
+    print("")
     
 
 #4-4 Probar a nivel 0,99 la hipótesis de que la varianza sea σ^2 > 5. 
@@ -531,31 +565,43 @@ def Cuatro_Dos():
 #probar hipotesis
 
 def Cuatro_Cuatro():
+
+    muestra10 = []
+    muestra10 = normal_boxmuller(100,math.sqrt(5),10)
     
-    #x_raya = calular_media_muestral(30, muestra)
+    muestra30 = []
+    muestra30 = normal_boxmuller(100,math.sqrt(5),30)
+
+    media10 = CalcularMedia(muestra10,10)
+    media30 = CalcularMedia(muestra30,30)
+
+    varianza10 = CalcularVarianza2(muestra10,10)
+    varianza30 = CalcularVarianza2(muestra30,30)
+
     #sumatoria = calcualr_sumatoria_al_cuadrado(muestra, x_raya,30)
     #s = sumatoria /(len(muestra)-1)
 
 #calculamos el limite inferior de la varianza con el estimador chi-cuadrado
-    #chi-cuadrado = chi2.ppf(0,99, len(muestra) -1)
-    #varinza = (len(muestra) - 1 * s / chi_cuadrado
+   
+    chi-cuadrado = chi2.ppf(0,99, len(muestra) -1)
+    varianza = (len(muestra) - 1 * s / chi_cuadrado
 
-    #if varianza < 5:
+    if varianza < 5:
         print ("la varianza con el estimador es", float(round(varianza,3)), " , porq lo que la hipotesis de la varianza mayor a 4 es falsa")
            
 #caluclar la probabilidad de cometer error tipo 2
 #calcular varianza muestral limite
 
-    #varianza muestreal limite = chi_cuadrado * 5 / (len(muestra)-1)
-    #nuevo_chi_cuadrado = (len(muestra) - 1) * varianza_muestral_limite / 6
+    varianza muestreal limite = chi_cuadrado * 5 / (len(muestra)-1)
+    nuevo_chi_cuadrado = (len(muestra) - 1) * varianza_muestral_limite / 6
 
 #calculo la probabilidad de que el estadistico de prueba chi-cuadrado sea mayor al nuevo chi-cuadrado
-    #print(1-chi2.cdf(nuevo_chi_cuadrado,29))
-    #print ("la probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
+    print(1-chi2.cdf(nuevo_chi_cuadrado,29))
+    print ("la probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
         
 
 #4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
-
+#def Cuatro_Cinco():
     
 
 
@@ -660,10 +706,10 @@ def Tests():
     #Cuatro_Uno()
 
     #4-2
-    Cuatro_Dos()
+    #Cuatro_Dos()
 
     #4-3
-    #Cuatro_Tres()    
+    Cuatro_Tres()    
 
     #4-4
     #Cuatro_Cuatro()
