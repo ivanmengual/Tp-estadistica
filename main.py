@@ -65,6 +65,9 @@ def GenerarNormal(media, varianza,n):
     a = ((-2)*(math.log(u1)))
     b = math.cos(math.radians((2)*(math.pi)*(u2)))
     c = math.sin(math.radians((2)*(math.pi)*(u2)))
+
+
+    #revisar si usamos seno o coseno
     
     if n % 2 == 0:
         
@@ -76,7 +79,21 @@ def GenerarNormal(media, varianza,n):
     z = ((math.sqrt(a))*(b))
     result = float(round((media + (varianza*z)),4))
     print ("resultado: ", result)
-    return (media + (varianza*z)) 
+    return (media + (varianza*z))
+
+def normal_boxmuller(mu, sigma, size):
+    sample=[]
+    while size != 0:
+        unif1 = random.random()
+        unif2 = random.random()
+        norm1 = math.sqrt(-2*math.log(unif1))*math.cos(2*math.pi*unif2) * sigma + mu
+        norm2 = math.sqrt(-2*math.log(unif1))*math.sin(2*math.pi*unif2) * sigma + mu
+        if size % 2 == 0:
+            size -= 1
+            sample.append(norm2)
+        size -= 1
+        sample.append(norm1)
+    return sample
 
 def GenerarNormalEjemplo():
 
@@ -123,6 +140,20 @@ def CalcularMedia(muestra,n):
 
 def CalcularVarianza(muestra,n):
 
+    #Varianza muestral: s² = 1/(n) * sum_1ton (x_i - x’)²
+    
+    media = CalcularMedia(muestra,n)
+    varianza = 0
+    for i in range(0,n):        
+        a = (muestra[i]-media)        
+        varianza = varianza + (a**2)
+        
+    varianza = ((1/n)*(varianza))
+
+    return float(round(varianza,4))
+
+def CalcularVarianza2(muestra,n):
+
     #Varianza muestral: s² = 1/(n - 1) * sum_1ton (x_i - x’)²
     
     media = CalcularMedia(muestra,n)
@@ -130,7 +161,8 @@ def CalcularVarianza(muestra,n):
     for i in range(0,n):        
         a = (muestra[i]-media)        
         varianza = varianza + (a**2)
-    varianza = varianza/n
+        
+    varianza = ((1/(n-1))*(varianza))
 
     return float(round(varianza,4))
 
@@ -388,10 +420,11 @@ def Tres_Dos():
 def Cuatro_Uno():
 
     muestra10 = []
-    for i in range(10):
-        muestra10.append(0.0000)
-    for i in range(0,10):
-        muestra10[i] = float(round(GenerarNormal(100,5,10), 4))
+    #for i in range(10):
+    #    muestra10.append(0.0000)
+    #for i in range(0,10):
+    #    muestra10[i] = float(round(normal_boxmuller(100,math.sqrt(5),10), 4))
+    muestra10 = normal_boxmuller(100,math.sqrt(5),10)
 
     media10 = CalcularMedia(muestra10,10)
     varianza10 = CalcularVarianza(muestra10,10)
@@ -400,10 +433,11 @@ def Cuatro_Uno():
     print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=10:", varianza10)
 
     muestra30 = []
-    for i in range(30):
-        muestra30.append(0.0000)
-    for i in range(0,30):
-        muestra30[i] = float(round(GenerarNormal(100,5,30), 4))
+    #for i in range(30):
+    #    muestra30.append(0.0000)
+    #for i in range(0,30):
+    #    muestra30[i] = float(round(normal_boxmuller(100,math.sqrt(5),30), 4))
+    muestra30 = normal_boxmuller(100,math.sqrt(5),30)
 
     media30 = CalcularMedia(muestra30,30)
     varianza30 = CalcularVarianza(muestra30,30)
@@ -416,11 +450,79 @@ def Cuatro_Uno():
 #4-2 Suponga que ya conoce el dato de que la distribución tiene varianza 5. Obtener intervalos de confianza del 95% y 98% para
 #la media de ambas muestras.
 
-    
+def Cuatro_Dos():   
 
+    #varianza = 5
+    #intervalo1 = 0.98
+    #intervalo2 = 0.95
+
+    muestra10 = []
+    muestra10 = normal_boxmuller(100,math.sqrt(5),10)
     
+    muestra30 = []
+    muestra30 = normal_boxmuller(100,math.sqrt(5),30)
+
+    media10 = CalcularMedia(muestra10,10)
+    varianza10 = CalcularVarianza(muestra10,10)
+    
+    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=10:", media10)
+    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=10:", varianza10)
+
+    media30 = CalcularMedia(muestra30,30)
+    varianza30 = CalcularVarianza(muestra30,30)
+    
+    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
+    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
+
+
+    #Z = (XRAYA - media) / (varianza/math.sqrt(n))
+    #Z = ((XRAYA - media)*math.sqrt(n)) / (varianza)
+
+    #alpha = 0.05
+
+    #Z10 = ((media10 - 100)*math.sqrt(n)) / (varianza)
+    #este valor se saca por tabla
+    #Z10 = 1.96
+    #P(-z=<Z=<z)= 0.95
+
+    #Z30 = ((media30 - 100)*math.sqrt(n)) / (varianza)
+
+
+    #resuelto
+    cota_inferior = ((media10)-(1.96)*(math.sqrt(5)/math.sqrt(10)))
+    cota_superior = ((media10)+(1.96)*(math.sqrt(5)/math.sqrt(10)))
+    print("")
+    print("95% cota inferior de muestra 10:", cota_inferior)
+    print("95% cota superior de muestra 10:", cota_superior)
+    print("")
+    
+    cota_inferior = ((media10)-(2.33)*(math.sqrt(5)/math.sqrt(10)))
+    cota_superior = ((media10)+(2.33)*(math.sqrt(5)/math.sqrt(10)))
+    print("98% cota inferior de muestra 10:", cota_inferior)
+    print("98% cota superior de muestra 10:", cota_superior)
+    print("")
+    
+    cota_inferior = ((media30)-(1.96)*(math.sqrt(5)/math.sqrt(30)))
+    cota_superior = ((media30)+(1.96)*(math.sqrt(5)/math.sqrt(30)))
+    print("95% cota inferior de muestra 30:", cota_inferior)
+    print("95% cota superior de muestra 30:", cota_superior)
+    print("")
+    
+    cota_inferior = ((media30)-(2.33)*(math.sqrt(5)/math.sqrt(30)))
+    cota_superior = ((media30)+(2.33)*(math.sqrt(5)/math.sqrt(30)))
+    print("98% cota inferior de muestra 30:", cota_inferior)
+    print("98% cota superior de muestra 30:", cota_superior)    
+    print("")
 
 #4-3 Repita el punto anterior pero usando la varianza estimada s^2, para la muestra de tamaño adecuado.
+
+#def Cuatro_Tres():
+
+
+
+
+
+    
 
 #4-4 Probar a nivel 0,99 la hipótesis de que la varianza sea σ^2 > 5. 
 # Calcular la probabilidad de cometer error tipo II para la hipótesis alternativa σ^2 = 6.
@@ -555,14 +657,18 @@ def Tests():
     #4---------------------------------
 
     #4-1
-    Cuatro_Uno()
+    #Cuatro_Uno()
 
     #4-2
+    Cuatro_Dos()
 
     #4-3
+    #Cuatro_Tres()    
 
     #4-4
+    #Cuatro_Cuatro()
 
     #4-5
+    #Cuatro_Cinco()
 
 Tests()
