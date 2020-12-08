@@ -3,7 +3,7 @@ import random
 import math
 import matplotlib.pyplot as plt
 import numpy as np # Importamos numpy como el alias np
-from scipy.stats import chi2
+from scipy.stats import chi2, norm
 
 #1-1. Utilizando únicamente la función random de su lenguaje (la función que genera un número aleatorio uniforme entre 0 y 1),
 def calcularAleatorio():
@@ -406,7 +406,6 @@ def Tres_Dos():
     for i in range(0,100):
         muestraAleatoria1[i] = float(round(generarBinomial(200,0.4), 4))
     
-
     print("La media de la muestra de numeros aleatorios es:", media1)
     print("La varianza de la muestra de numeros aleatorios es:", varianza1)
 
@@ -578,32 +577,123 @@ def Cuatro_Cuatro():
     varianza10 = CalcularVarianza2(muestra10,10)
     varianza30 = CalcularVarianza2(muestra30,30)
 
-    #sumatoria = calcualr_sumatoria_al_cuadrado(muestra, x_raya,30)
+    #sumatoria = calcular_sumatoria_al_cuadrado(muestra, x_raya,30)
     #s = sumatoria /(len(muestra)-1)
 
 #calculamos el limite inferior de la varianza con el estimador chi-cuadrado
    
-    chi-cuadrado = chi2.ppf(0,99, len(muestra) -1)
-    varianza = (len(muestra) - 1 * s / chi_cuadrado
+    chi_cuadrado = float(round(chi2.ppf(0.99, len(muestra30)-1),4))
+    
+    print("CHI_CUADRADO",chi_cuadrado)
 
-    if varianza < 5:
-        print ("la varianza con el estimador es", float(round(varianza,3)), " , porq lo que la hipotesis de la varianza mayor a 4 es falsa")
+    #varianza = (len(muestra10) - 1 * s / chi_cuadrado)
+    varianza = (29 * varianza30 / chi_cuadrado)
+    print("VARIANZA",varianza)
+
+    if (varianza) =< 5:
+        print ("El valor de la varianza con el estimador es", float(round(varianza,4)))
+        print ("")
+        print ("Entonces la hipotesis de la varianza mayor a 5 es FALSA") #falsa hipotesis nula
+
+    # a menos que esté mal el ejercicio, esto no se debería ejecutar nunca
+    if (varianza) > 5:
+        print ("El valor de la varianza con el estimador es", float(round(varianza,4)))
+        print ("")
+        print ("Entonces la hipotesis de la varianza mayor a 5 es VERDADERA") #verdadera hipotesis nula
            
-#caluclar la probabilidad de cometer error tipo 2
+#calcular la probabilidad de cometer error tipo 2
 #calcular varianza muestral limite
 
-    varianza muestreal limite = chi_cuadrado * 5 / (len(muestra)-1)
-    nuevo_chi_cuadrado = (len(muestra) - 1) * varianza_muestral_limite / 6
+    #formula original: Chi2 = (n-1)*(s)^2 / desviación^2
+
+    #(s)^2 = chi2 * desviación^2 / (n-1)
+    varianza_muestral_limite = chi_cuadrado * 5 / (len(muestra30)-1)
+
+    #calculo nuevo chi cuadrado con s^2 = 6  -> Chi2 = (n-1)*(s)^2 / desviación^2
+    nuevo_chi_cuadrado = (len(muestra30) - 1) * varianza_muestral_limite / 6
+
 
 #calculo la probabilidad de que el estadistico de prueba chi-cuadrado sea mayor al nuevo chi-cuadrado
-    print(1-chi2.cdf(nuevo_chi_cuadrado,29))
-    print ("la probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
+    nuevo = 1-chi2.cdf(nuevo_chi_cuadrado,29)
+    print("nuevo chi cuadrado", nuevo)
+    
+    
+
+    print ("La probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
         
 
 #4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
-#def Cuatro_Cinco():
-    
+def Cuatro_Cinco():
 
+    muestra30 = []
+    muestra30 = normal_boxmuller(100,math.sqrt(5),30)
+    print (muestra30)
+    print("")
+
+    #Ordena
+    empirica_limpia = sorted(set(muestra30))
+    print(empirica_limpia)
+    print("")
+
+    #Divide en intervalos de 0,5 a partir del primer valor (minimo)
+    subgrupos = np.arange(min(muestra30), max(muestra30), 0.5)
+    print (subgrupos)
+    print("")
+
+    #Es la cantidad de valores que entran en un rango de 0,5
+    observados = [len([x for x in muestra30 if x >= l and x < l + 0.5]) for l in subgrupos]
+    print("Observados: ",observados)
+    print("")
+
+    #Es la cantidad de valores esperados segun una distribución normal. No a partir de la teorica    
+    esperados = [round((norm.cdf(x + 0.5, loc=100, scale=math.sqrt(5)) - norm.cdf(x, loc=100, scale=math.sqrt(5))) * 30) for x in subgrupos]
+    print("")
+    print("Esperados: ",esperados)
+
+
+    #Agrupo las muestras esperadas y observadas con frecuencias mayores o iguales a 5
+    obs2 = []
+    esp2 = []
+    obsacm = 0
+    espacm = 0
+
+    for pos in range(len(observados)):
+        obsacm += observados[pos]
+        espacm += esperados[pos]
+
+        if obsacm >= 5 and espacm >= 5:
+            obs2.append(obsacm)
+            esp2.append(espacm)
+            obsacm = 0
+            espacm = 0
+
+    if obsacm or espacm:
+        esp2[-1] += espacm
+        obs2[-1] += obsacm
+
+    print("")
+    print("Frecuencias observadas en intervalos mayores a 5: ",obs2)
+    print("Frecuencias esperadas en intervalos mayores a 5: ",esp2)
+
+
+    #calcula el estimador como la sumatoria de los errores cuadrados relativos
+    errores_cuadrados = sum([(obs2[pos] - val)**2/val for pos, val in enumerate(esp2)])
+
+    #for pos, val in enumerate(esp2):
+    #    sum([(obs2[pos] - val)**2 / val])
+    #errores_cuadrados = sum        
+
+    print("")
+    print("Errores cuadrados: ",errores_cuadrados)
+    print("")
+
+
+    print("CHI CUADRADO: ", float(round(chi2.ppf(0.01, len(esp2)-1),3)))
+    print("")
+
+    #Si el estimador calculado es menor a chi-cuadrado con nivel 99% de LEN (ESPERADOS) es verdadero
+    if (errores_cuadrados > chi2.ppf(0.01, len(esp2) - 1)):
+        print("VERDADERO")
 
 def Tests():
 
@@ -709,12 +799,12 @@ def Tests():
     #Cuatro_Dos()
 
     #4-3
-    Cuatro_Tres()    
+    #Cuatro_Tres()    
 
     #4-4
     #Cuatro_Cuatro()
 
     #4-5
-    #Cuatro_Cinco()
+    Cuatro_Cinco()
 
 Tests()
