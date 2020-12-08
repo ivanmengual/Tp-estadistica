@@ -16,7 +16,7 @@ def calcularAleatorio():
 def generarBernoulli(p):
     probabilidad_exito = p
     aleatorio = calcularAleatorio()
-    print("Numero aleatorio generado: ", aleatorio)
+    #print("Numero aleatorio generado: ", aleatorio)
     if (probabilidad_exito > aleatorio):
         return 1
     else:
@@ -42,7 +42,7 @@ def generarBinomial(n, p):
 #Realiza el calculo de la funcion inversa con un numero aleatorio
 def generarInversa(lambdaExponencial):
     aleatorio = calcularAleatorio()
-    print("El numero aleatorio generado es: ", aleatorio)
+    #print("El numero aleatorio generado es: ", aleatorio)
     #return float(round(((-(math.log(1-aleatorio)))/lambdaExponencial),4))
 
     return float(round(((-(math.log(aleatorio)))/lambdaExponencial),4))
@@ -114,7 +114,7 @@ def GenerarNormalEjemplo():
     result = float(round((168 + (8*z)),4))
     print ("resultado: ", result)
     
-def estandarizar(muestra,n,media,varianza):
+def estandarizar(muestra,n,media,desviacion):
     
     #   Z = (X - mu)/sigma
     
@@ -124,7 +124,7 @@ def estandarizar(muestra,n,media,varianza):
         b.append(0.0000)
 
     for i in range(0,n):
-        b[i] = ((muestra[i] - media) / (varianza))   
+        b[i] = ((muestra[i] - media) / (desviacion))   
 
     return b
 
@@ -198,19 +198,19 @@ def grafico_histograma(muestra,n,ancho,titulo,x,y):
 
         if n == 10:
             b[i]=i/n
-            print ("n = 10: ", b[i])
+            #print ("n = 10: ", b[i])
 
         if n == 20:
             b[i]=i/(n/4)
-            print ("n = 20: ", b[i])
+            #print ("n = 20: ", b[i])
             
         if n == 50:
             b[i]=i/(n/25)
-            print ("n = 30: ", b[i])
+            #print ("n = 30: ", b[i])
 
         if n == 100:
             b[i]=i/(n/100)
-            print ("n = 10: ", b[i])
+            #print ("n = 10: ", b[i])
 
 #    b = [0.0,0.1,0.2,0.3,0.4,0.5,0.6,0.7,0.8,0.9,
 #         1.0,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,
@@ -258,42 +258,129 @@ def histograma(sample, gaps, relative=False):
     :type relative: bool
     """
     weights = [1/len(sample) for a in sample] if relative else None
-    a, p = plot.subplots(1, len(gaps))
+    #a, p = plt.subplots()
+    a, p = plt.subplots(1, len(gaps))
     p = [p] if len(gaps) == 1 else p
     for i, gap in enumerate(gaps):
         p[i].hist(sample, \
                 arange(min(sample), max(sample) + gap, gap), weights=weights)
+
     plot.figure(num=1, figsize=(8, 18))
     plot.subplots_adjust(wspace=0.5)
     plot.show()
 
-def DosUno_Inversa(n,ancho,exp):
-
-    muestra = []
-    #inserto 0,0000 en los 10 lugares del array
-    for i in range(n):
-        muestra.append(0.0000)
-
-    #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media 
-    for i in range(0,n):
-        aleatorio_con_formula_exponencial = generarInversa(exp)
-        muestra[i] = aleatorio_con_formula_exponencial
-        
-        print ("Las muestras son:", muestra[i])
+def histograma2(muestra):
     
-    media = CalcularMedia(muestra,n)
+    fig, axs = plt.subplots(2, 2, sharey=True)
 
-    varianza = CalcularVarianza(muestra,n)
+    axs[0][0].hist(muestra1prima, bins=[i for i in np.arange(-5,6,0.5)], weights=np.zeros_like(muestra1prima)+1./len(muestra1prima))
+    axs[0][1].hist(muestra2prima, bins=[i for i in np.arange(-5,6,0.5)], weights=np.zeros_like(muestra2prima)+1./len(muestra2prima))
+    axs[1][0].hist(muestra3prima, bins=[i for i in np.arange(-5,6,0.5)], weights=np.zeros_like(muestra3prima)+1./len(muestra3prima))
+    axs[1][1].hist(muestra4prima, bins=[i for i in np.arange(-5,6,0.5)], weights=np.zeros_like(muestra4prima)+1./len(muestra4prima))
 
-    print("La media de la muestra 1 de numeros aleatorios es:", media)
-    print("La varianza de la muestra 1 de numeros aleatorios es:", varianza)
+    axs[0][0].set_title("Muestra 1 Normalizada")
+    axs[0][1].set_title("Muestra 2 Normalizada")
+    axs[1][0].set_title("Muestra 3 Normalizada")
+    axs[1][1].set_title("Muestra 4 Normalizada")
+    plt.show()
 
-    grafico_histograma(muestra,n,ancho,"Exponenciales muestra","Muestras","Valores")
+#def DosUno_Inversa(n,ancho,exp):
+def DosUno_Inversa(exp):
+    
+    muestra10 = []
+    #inserto 0,0000 en los 10 lugares del array
+    for i in range(10):
+        muestra10.append(0.0000)
+    #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media 
+    for i in range(0,10):
+        aleatorio_con_formula_exponencial = generarInversa(exp)
+        muestra10[i] = aleatorio_con_formula_exponencial
+        
+    print("")
+    print ("Las muestras con 10: ", muestra10)
+    print("")
+    media10 = CalcularMedia(muestra10,10)
+
+    varianza10 = CalcularVarianza(muestra10,10)
+
+    print("La media de la muestra 10 de numeros aleatorios es:", media10)
+    print("La varianza de la muestra 10 de numeros aleatorios es:", varianza10)
+    print("")
+
+    muestra30 = []
+    #inserto 0,0000 en los 10 lugares del array
+    for i in range(30):
+        muestra30.append(0.0000)
+    #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media 
+    for i in range(0,30):
+        aleatorio_con_formula_exponencial = generarInversa(exp)
+        muestra30[i] = aleatorio_con_formula_exponencial
+        
+    print("")
+    print ("Las muestras con 30: ", muestra30)
+    print("")
+    media30 = CalcularMedia(muestra30,30)
+
+    varianza30 = CalcularVarianza(muestra30,30)
+
+    print("La media de la muestra 30 de numeros aleatorios es:", media30)
+    print("La varianza de la muestra 30 de numeros aleatorios es:", varianza30)
+    print("")
+
+    muestra200 = []
+    #inserto 0,0000 en los 10 lugares del array
+    for i in range(200):
+        muestra200.append(0.0000)
+    #inserto el calculo generar inversa en cada posición y aprovecho para calcular la media 
+    for i in range(0,200):
+        aleatorio_con_formula_exponencial = generarInversa(exp)
+        muestra200[i] = aleatorio_con_formula_exponencial
+        
+    print("")
+    print ("Las muestras con 200: ", muestra200)
+    print("")
+    media200 = CalcularMedia(muestra200,200)
+
+    varianza200 = CalcularVarianza(muestra200,200)
+
+    print("La media de la muestra 200 de numeros aleatorios es:", media200)
+    print("La varianza de la muestra 200 de numeros aleatorios es:", varianza200)
+    print("")
+
+
+    muestra1 = muestra10
+    muestra2 = muestra30
+    muestra3 = muestra200
+
+    #Creacion del espacio de graficos y graficos
+    fig, axs = plt.subplots(3, 3)
+
+    # La funcion histograma se encarga de realizar la cuenta de frecuencias segun la cantidad de bins que se quieran declarar.
+    # Posteriormente para que la cuenta sea relativa se usa el parametro weights el cual asigna a cada columna un peso relativo a 1
+    # https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.hist.html?highlight=hist#matplotlib.axes.Axes.hist
+
+    axs[0][0].hist(muestra1, bins=[i for i in np.arange(0,10,0.4)], range=(0,10), weights=np.zeros_like(muestra1)+1./len(muestra1))
+    axs[1][0].hist(muestra1, bins=[i for i in np.arange(0,10,0.2)], range=(0,10), weights=np.zeros_like(muestra1)+1./len(muestra1))
+    axs[2][0].hist(muestra1, bins=[i for i in np.arange(0,10,0.1)], range=(0,10), weights=np.zeros_like(muestra1)+1./len(muestra1))
+
+    axs[0][1].hist(muestra2, bins=[i for i in np.arange(0,10,0.4)], range=(0,10), weights=np.zeros_like(muestra2)+1./len(muestra2))
+    axs[1][1].hist(muestra2, bins=[i for i in np.arange(0,10,0.2)], range=(0,10), weights=np.zeros_like(muestra2)+1./len(muestra2))
+    axs[2][1].hist(muestra2, bins=[i for i in np.arange(0,10,0.1)], range=(0,10), weights=np.zeros_like(muestra2)+1./len(muestra2))
+
+    axs[0][2].hist(muestra3, bins=[i for i in np.arange(0,15,0.4)], range=(0,10), weights=np.zeros_like(muestra3)+1./len(muestra3))
+    axs[1][2].hist(muestra3, bins=[i for i in np.arange(0,15,0.2)], range=(0,10), weights=np.zeros_like(muestra3)+1./len(muestra3))
+    axs[2][2].hist(muestra3, bins=[i for i in np.arange(0,15,0.1)], range=(0,10), weights=np.zeros_like(muestra3)+1./len(muestra3))
+
+    plt.show()
 
 
 # 2-3 Generar una muestra de números Bin(n=10, p=0,3) de tamaño de la muestra = 50. Construir la función de
 # distribución empírica de dicha muestra.
 def generarEmpirica(muestra):
+
+    print("")
+    print("Muestra ordenada : ", muestra)
+    print("")
     funcion_acumulada = []
     numero_anterior = 0
     saltos = []
@@ -329,25 +416,35 @@ def generarEmpirica(muestra):
 
     return funcion_acumulada
 
-
-
 def DosTres():
 
     muestra = []
+    empirica = []
+
+    #Bin(10,0,3) de tamaño n Æ 50.
+    
+    for i in range(0,50):
+        muestra.append(generarBinomial(10, 0.3))
+
+    print("")
+    print("la muestra binomial es: ",muestra)
+    print("")
     empirica = generarEmpirica(sorted(muestra))
     variables = sorted(set(muestra))
+
     #Borra las variables repetidas
     empirica_limpia = sorted(set(empirica))
 
-    for i in range(0, len(muestra)):
-        print(muestra[i])
-
+    print("Función de distribución empirica:")
+    print("")
+    print(empirica_limpia)
+    print("")
+          
     for i in range(0,len(empirica_limpia)):
        
         print ("Para x > ", variables[i])
         print ("F(x) es: ",empirica_limpia[i])
     
-
  
 # 2-4 A partir de la función de distribución empírica del punto anterior, generar una nueva muestra de números aleatorios utilizando
 # el método de simulación de la primera parte. Computar la media y varianza muestral y graficar el histograma
@@ -370,32 +467,66 @@ def DosCuatro(muestra):
 # 3-1 Generar cuatro muestras de números aleatorios de tamaño 100, todas con distribución binomial con p = 0,40 y n = 10, n = 20,
 # n = 50 y n = 100 respectivamente. Graficar sus histogramas. ¿Qué observa?
 
-def Tres_Uno(n):
+def Tres_Uno():
 
     # Creo la muestras como array
     muestraAleatoria1 = []
+    muestraAleatoria2 = []
+    muestraAleatoria3 = []
+    muestraAleatoria4 = []
 
     # Les asigno 0.000 en todas las posiciones
-    for i in range(n):
+    for i in range(100):
         muestraAleatoria1.append(0.0000)
+    for i in range(100):
+        muestraAleatoria2.append(0.0000)
+    for i in range(100):
+        muestraAleatoria3.append(0.0000)
+    for i in range(100):
+        muestraAleatoria4.append(0.0000)
 
     # Luego asigno la distribucion binomial en todas las posiciones
-    for i in range(0,n):
-        muestraAleatoria1[i] = generarBinomial(n,0.4)
-        print ("muestra binomial",muestraAleatoria1[i])
+    for i in range(0,100):
+        muestraAleatoria1[i] = generarBinomial(10,0.4)
+    for i in range(0,100):
+        muestraAleatoria2[i] = generarBinomial(20,0.4)
+    for i in range(0,100):
+        muestraAleatoria3[i] = generarBinomial(50,0.4)
+    for i in range(0,100):
+        muestraAleatoria4[i] = generarBinomial(100,0.4)
 
-    media = CalcularMedia(muestraAleatoria1,n)
-
-    varianza = CalcularVarianza(muestraAleatoria1,n)
-
-    desviacion = float(round(math.sqrt(varianza),4))
-    
-    print("La media de la muestra de numeros aleatorios es:", media)
-    print("La desviacion de la muestra de numeros aleatorios es:", desviacion)
-    print("La varianza de la muestra de numeros aleatorios es:", varianza)
+    print ("")
+    print ("muestra binomial 10",muestraAleatoria1)
+    print ("")
+    print ("")
+    print ("muestra binomial 20",muestraAleatoria2)
+    print ("")
+    print ("")
+    print ("muestra binomial 50",muestraAleatoria3)
+    print ("")
+    print ("")
+    print ("muestra binomial 100",muestraAleatoria4)
+    print ("")
 
     #grafico histogramas
-    grafico_histograma(muestraAleatoria1,n,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    grafico_histograma(muestraAleatoria1,10,0.8,"Muestra Aleatoria Binomial 10","Rango","Cantidad de muestras")
+    grafico_histograma(muestraAleatoria2,20,0.8,"Muestra Aleatoria Binomial 20","Rango","Cantidad de muestras")
+    grafico_histograma(muestraAleatoria3,50,0.8,"Muestra Aleatoria Binomial 50","Rango","Cantidad de muestras")
+    grafico_histograma(muestraAleatoria4,100,0.8,"Muestra Aleatoria Binomial 100","Rango","Cantidad de muestras")
+
+    #Creacion del espacio de graficos y graficos
+    fig, axs = plt.subplots(2, 2)
+
+    # La funcion histograma se encarga de realizar la cuenta de frecuencias segun la cantidad de bins que se quieran declarar.
+    # Posteriormente para que la cuenta sea relativa se usa el parametro weights el cual asigna a cada columna un peso relativo a 1
+    # https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.hist.html?highlight=hist#matplotlib.axes.Axes.hist
+    
+    axs[0][0].hist(muestraAleatoria1, bins=[i for i in np.arange(0,10,0.4)], range=(0,10), weights=np.zeros_like(muestraAleatoria1)+1./len(muestraAleatoria1))
+    axs[0][1].hist(muestraAleatoria2, bins=[i for i in np.arange(5,15,0.4)], range=(0,20), weights=np.zeros_like(muestraAleatoria2)+1./len(muestraAleatoria2))
+    axs[1][0].hist(muestraAleatoria3, bins=[i for i in np.arange(0,40,0.4)], range=(0,50), weights=np.zeros_like(muestraAleatoria3)+1./len(muestraAleatoria3))
+    axs[1][1].hist(muestraAleatoria4, bins=[i for i in np.arange(20,60,0.4)], range=(0,100), weights=np.zeros_like(muestraAleatoria4)+1./len(muestraAleatoria4))
+    
+    plt.show()
 
 
 def Tres_Dos():
@@ -404,16 +535,101 @@ def Tres_Dos():
     for i in range(100):
         muestraAleatoria1.append(0.0000)
     for i in range(0,100):
-        muestraAleatoria1[i] = float(round(generarBinomial(200,0.4), 4))
+        muestraAleatoria1[i] = float(round(generarBinomial(100,0.4), 4))
+
+    print("Muestra Binomial 100: ",muestraAleatoria1)
+    print("")
+    media1 = CalcularMedia(muestraAleatoria1,100)
+    varianza1 = CalcularVarianza(muestraAleatoria1,100)
+    desviacion1 = float(round(math.sqrt(varianza1),4))
+
     
     print("La media de la muestra de numeros aleatorios es:", media1)
     print("La varianza de la muestra de numeros aleatorios es:", varianza1)
+    print("La desviación estandar de la muestra de numeros aleatorios es:", desviacion1)
 
-    graficar(muestraAleatoria1,n,0.8,"Muestra Aleatoria Binomial","Rango","Cantidad de muestras")
+    normalizada = estandarizar(muestraAleatoria1,100,media1,desviacion1)
+    print("")
+    print("Muestra Normalizada 100: ",normalizada)
+    print("")
+    
+    #Creacion del espacio de graficos y graficos
+    fig, axs = plt.subplots(1, 1)
+    axs.hist(normalizada, bins=[i for i in np.arange(-4,4,0.2)], weights=np.zeros_like(normalizada)+1./len(normalizada))
+    plt.show()
 
 #3-3 Para cada una de las muestras anteriores, calcule la media muestral. Justifique lo que observa.
 
+def Tres_Tres():
 
+    # Creo la muestras como array
+    muestraAleatoria1 = []
+    muestraAleatoria2 = []
+    muestraAleatoria3 = []
+    muestraAleatoria4 = []
+
+    # Les asigno 0.000 en todas las posiciones
+    for i in range(100):
+        muestraAleatoria1.append(0.0000)
+    for i in range(100):
+        muestraAleatoria2.append(0.0000)
+    for i in range(100):
+        muestraAleatoria3.append(0.0000)
+    for i in range(100):
+        muestraAleatoria4.append(0.0000)
+
+    # Luego asigno la distribucion binomial en todas las posiciones
+    for i in range(0,100):
+        muestraAleatoria1[i] = generarBinomial(10,0.4)
+    for i in range(0,100):
+        muestraAleatoria2[i] = generarBinomial(20,0.4)
+    for i in range(0,100):
+        muestraAleatoria3[i] = generarBinomial(50,0.4)
+    for i in range(0,100):
+        muestraAleatoria4[i] = generarBinomial(100,0.4)
+
+    print ("")
+    print ("muestra binomial 10",muestraAleatoria1)
+    print ("")
+    print ("")
+    print ("muestra binomial 20",muestraAleatoria2)
+    print ("")
+    print ("")
+    print ("muestra binomial 50",muestraAleatoria3)
+    print ("")
+    print ("")
+    print ("muestra binomial 100",muestraAleatoria4)
+    print ("")
+
+    media1 = CalcularMedia(muestraAleatoria1,10)
+    varianza1 = CalcularVarianza(muestraAleatoria1,10)
+    desviacion1 = float(round(math.sqrt(varianza1),4))
+    media2 = CalcularMedia(muestraAleatoria2,20)
+    varianza2 = CalcularVarianza(muestraAleatoria2,20)
+    desviacion2 = float(round(math.sqrt(varianza2),4))
+    media3 = CalcularMedia(muestraAleatoria3,50)
+    varianza3 = CalcularVarianza(muestraAleatoria3,50)
+    desviacion3 = float(round(math.sqrt(varianza3),4))
+    media4 = CalcularMedia(muestraAleatoria4,100)
+    varianza4 = CalcularVarianza(muestraAleatoria4,100)
+    desviacion4 = float(round(math.sqrt(varianza4),4))
+    
+    print("La media de la muestra 10 de numeros aleatorios es:", media1)
+    print("La desviacion de la muestra 10 de numeros aleatorios es:", desviacion1)
+    print("La varianza de la muestra 10 de numeros aleatorios es:", varianza1)
+    print("")
+    print("La media de la muestra 20de numeros aleatorios es:", media2)
+    print("La desviacion de la muestra 20 de numeros aleatorios es:", desviacion2)
+    print("La varianza de la muestra 20 de numeros aleatorios es:", varianza2)
+    print("")
+    print("La media de la muestra 50 de numeros aleatorios es:", media3)
+    print("La desviacion de la muestra 50 de numeros aleatorios es:", desviacion3)
+    print("La varianza de la muestra 5de numeros aleatorios es:", varianza3)
+    print("")
+    print("La media de la muestra 100 de numeros aleatorios es:", media4)
+    print("La desviacion de la muestra 100 de numeros aleatorios es:", desviacion4)
+    print("La varianza de la muestra 100 de numeros aleatorios es:", varianza4)
+    print("")
 
 #4-1 Generar dos muestras N(100, 5), una de tamaño n = 10 y otra de tamaño n = 30. Obtener estimaciones puntuales de su media
 #y varianza.
@@ -429,9 +645,12 @@ def Cuatro_Uno():
 
     media10 = CalcularMedia(muestra10,10)
     varianza10 = CalcularVarianza(muestra10,10)
-    
-    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=10:", media10)
-    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=10:", varianza10)
+
+    print("")
+    print("Muestra N=10 ",muestra10)
+    print("")
+    print("la media muestral es un estimador insesgado de la media n=10:", media10)
+    print("la varianza muestral es un estimador insesgado de la varianza n=10:", varianza10)
 
     muestra30 = []
     #for i in range(30):
@@ -440,11 +659,14 @@ def Cuatro_Uno():
     #    muestra30[i] = float(round(normal_boxmuller(100,math.sqrt(5),30), 4))
     muestra30 = normal_boxmuller(100,math.sqrt(5),30)
 
+    print("")
+    print("Muestra N=30 ",muestra30)
+    print("")
     media30 = CalcularMedia(muestra30,30)
     varianza30 = CalcularVarianza(muestra30,30)
     
-    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
-    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
+    print("la media muestral es un estimador insesgado de la media n=30 :", media30)
+    print("la varianza muestral es un estimador insesgado de la varianza n=30:", varianza30)
 
     
     
@@ -465,17 +687,28 @@ def Cuatro_Dos():
 
     media10 = CalcularMedia(muestra10,10)
     varianza10 = CalcularVarianza(muestra10,10)
-    
-    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=10:", media10)
-    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=10:", varianza10)
+
+    print("")
+    print("Muestra N=10 ",muestra10)
+    print("")
+    print("la media muestral es un estimador insesgado de la media n=10:", media10)
+    print("la varianza muestral es un estimador insesgado de la varianza n=10:", varianza10)
 
     media30 = CalcularMedia(muestra30,30)
     varianza30 = CalcularVarianza(muestra30,30)
-    
-    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
-    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
+
+    print("")
+    print("Muestra N=30 ",muestra30)
+    print("")
+    print("la media muestral es un estimador insesgado de la media n=30 :", media30)
+    print("la varianza muestral es un estimador insesgado de la varianza n=30:", varianza30)
 
     #resuelto
+    print("")
+    print("Calculo cotas con T de student a 95% -> ((media)+ -(ALPHA POR TABLA = 1.96)*(DESVIACION EST) / RAIZ(N) )")
+    print("")
+    print("Calculo cotas con T de student a 98% -> ((media)+ -(ALPHA POR TABLA = 2.33)*(DESVIACION EST) / RAIZ(N) )")
+    print("")
     cota_inferior = ((media10)-(1.96)*(math.sqrt(5)/math.sqrt(10)))
     cota_superior = ((media10)+(1.96)*(math.sqrt(5)/math.sqrt(10)))
     print("")
@@ -518,18 +751,31 @@ def Cuatro_Tres():
     desviacion10 = math.sqrt(CalcularVarianza2(muestra10,10))
 
     print("")
-    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=10:", media10)
-    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza10)
-    print("la desviacion muestral (o s2) es un estimador insesgado de la varianza n=10:", desviacion10)
+    print("Muestra N=10 ",muestra10)
+    print("")
+    print("")
+    print("la media muestral es un estimador insesgado de la media n=10:", media10)
+    print("la varianza muestral es un estimador insesgado de la varianza n=30:", varianza10)
+    print("la desviacion muestral es un estimador insesgado de la varianza n=10:", desviacion10)
     print("")
 
     media30 = CalcularMedia(muestra30,30)
     varianza30 = CalcularVarianza2(muestra30,30)
     desviacion30 = math.sqrt(CalcularVarianza2(muestra30,30))
-    
-    print("la media muestral (o ¯ x) es un estimador insesgado de la media n=30 :", media30)
-    print("la varianza muestral (o s2) es un estimador insesgado de la varianza n=30:", varianza30)
-    print("la desviacion muestral (o s2) es un estimador insesgado de la varianza n=30:", desviacion30)
+
+    print("")
+    print("Muestra N=30 ",muestra30)
+    print("")
+    print("la media muestral es un estimador insesgado de la media n=30 :", media30)
+    print("la varianza muestral es un estimador insesgado de la varianza n=30:", varianza30)
+    print("la desviacion muestral es un estimador insesgado de la varianza n=30:", desviacion30)
+
+    #resuelto
+    print("")
+    print("Calculo cotas con CHI CUADRADO a 95% -> (media)+ -(ALPHA POR TABLA)*(RAIZ(desviacion)/RAIZ(N))")
+    print("")
+    print("Calculo cotas con CHI CUADRADO a 98% -> (media)+ -(ALPHA POR TABLA)*(RAIZ(desviacion)/RAIZ(N))")
+    print("")
     
     cota_inferior = ((media10)-(2.262)*(math.sqrt(desviacion10)/math.sqrt(10)))
     cota_superior = ((media10)+(2.262)*(math.sqrt(desviacion10)/math.sqrt(10)))
@@ -577,6 +823,13 @@ def Cuatro_Cuatro():
     varianza10 = CalcularVarianza2(muestra10,10)
     varianza30 = CalcularVarianza2(muestra30,30)
 
+    print("")
+    print("Muestra N=10 ",muestra10)
+    print("")
+    print("")
+    print("Muestra N=30 ",muestra30)
+    print("")
+
     #sumatoria = calcular_sumatoria_al_cuadrado(muestra, x_raya,30)
     #s = sumatoria /(len(muestra)-1)
 
@@ -588,9 +841,10 @@ def Cuatro_Cuatro():
 
     #varianza = (len(muestra10) - 1 * s / chi_cuadrado)
     varianza = (29 * varianza30 / chi_cuadrado)
+    #varianza = 
     print("VARIANZA",varianza)
 
-    if (varianza) =< 5:
+    if (varianza) <= 5:
         print ("El valor de la varianza con el estimador es", float(round(varianza,4)))
         print ("")
         print ("Entonces la hipotesis de la varianza mayor a 5 es FALSA") #falsa hipotesis nula
@@ -605,21 +859,46 @@ def Cuatro_Cuatro():
 #calcular varianza muestral limite
 
     #formula original: Chi2 = (n-1)*(s)^2 / desviación^2
+    print("")
+    print("formula original: Chi2 = (n-1)*(s)^2 / desviación^2")
+    print("")
 
     #(s)^2 = chi2 * desviación^2 / (n-1)
     varianza_muestral_limite = chi_cuadrado * 5 / (len(muestra30)-1)
+    print ("Varianza muestral limite",varianza_muestral_limite)
 
     #calculo nuevo chi cuadrado con s^2 = 6  -> Chi2 = (n-1)*(s)^2 / desviación^2
     nuevo_chi_cuadrado = (len(muestra30) - 1) * varianza_muestral_limite / 6
-
+    print ("Nuevo chi cuadrado con la varianza muestral limite, dividio desviacion = 6", nuevo_chi_cuadrado)
 
 #calculo la probabilidad de que el estadistico de prueba chi-cuadrado sea mayor al nuevo chi-cuadrado
     nuevo = 1-chi2.cdf(nuevo_chi_cuadrado,29)
     print("nuevo chi cuadrado", nuevo)
-    
-    
+    print("FALTA CALCULAR LA PROBAILIDAD DE ERROR TIPO 2")
 
-    print ("La probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
+    #yo busco P(X > 49.588 | v = 6) -> P(((n-1)S)/5 > 49.588)
+
+    #entonces despejas S y te da S=8.55
+
+    #te fijas el chi limite de ese 8.55
+
+    #con la que asumis es la varianza real, 6, -> 29x8.55/6 = 41.325
+
+    #significa que vos queres saber cual es la probabilidad de caer más allá de 49.588 si la varianza real es 6
+
+    #   H0 V > 5, H1 V = 6
+
+    #con esa varianza que me deja parado justo en el punto critico
+
+    #si la varianza real en vez de 5 es 6
+
+    #que chi corresponde? y que proba tengo de pasarla
+
+    #el que chi corresponde es el 41.325
+
+    #y la proba sería el 6.5
+
+    #print ("La probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
         
 
 #4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
@@ -648,7 +927,7 @@ def Cuatro_Cinco():
     #Es la cantidad de valores esperados segun una distribución normal. No a partir de la teorica    
     esperados = [round((norm.cdf(x + 0.5, loc=100, scale=math.sqrt(5)) - norm.cdf(x, loc=100, scale=math.sqrt(5))) * 30) for x in subgrupos]
     print("")
-    print("Esperados: ",esperados)
+    print("Esperados, calculados con distrubución normal: ",esperados)
 
 
     #Agrupo las muestras esperadas y observadas con frecuencias mayores o iguales a 5
@@ -693,118 +972,150 @@ def Cuatro_Cinco():
 
     #Si el estimador calculado es menor a chi-cuadrado con nivel 99% de LEN (ESPERADOS) es verdadero
     if (errores_cuadrados > chi2.ppf(0.01, len(esp2) - 1)):
-        print("VERDADERO")
+        print("Como el error cuadratico medio es mayor al chi cuadrado con nivel 0.99, concluyo: VERDADERO")
+    else:
+        print("Como el error cuadratico medio es menor al chi cuadrado con nivel 0.99, concluyo: FALSO")
 
 def Tests():
 
     #1
 
     #1-1
+    print("Punto 1-1 - Generar aleatorio")
+    print("")
     #Testeo generar aleatorio   
-    #print ("Calculo Aleatorio 1: ",calcularAleatorio())
-    #print ("Calculo Aleatorio 2: ",calcularAleatorio())
-    #print ("Calculo Aleatorio 3: ",calcularAleatorio())
-    #print ("Calculo Aleatorio 4: ",calcularAleatorio())
-    #print ("Calculo Aleatorio 5: ",calcularAleatorio())
 
+    print ("Calculo Aleatorio 1: ",calcularAleatorio())
+    print ("Calculo Aleatorio 2: ",calcularAleatorio())
+    print ("Calculo Aleatorio 3: ",calcularAleatorio())
+    print ("Calculo Aleatorio 4: ",calcularAleatorio())
+    print ("Calculo Aleatorio 5: ",calcularAleatorio())
+    print("")
+    print("Punto 1-1 - Generar bernoulli")
+    print("")
     #Testeo generar bernoulli   
     #habilitar el print de la función para ver el aleatorio generado
-    #print("Genero función bernoulli", generarBernoulli(0.3))
-
-    #1-2 
+    print("Genero función bernoulli con p= 0.3")
+    print("")
+    print(generarBernoulli(0.3))
+    print("")
+    
+    #1-2
+    print("")
+    print("Punto 1-2 - Generar binomial")
+    print("")
     #Testeo generar binomial    
     #habilitar el print de la función bernoulli para ver el aleatorio generado
-    #print("Genero función binomial: ", generarBinomial(2,0.4))
+    print("Genero función binomial: ", generarBinomial(2,0.4))
 
-    #1-3  
+    #1-3
+    print("")
+    print("Punto 1-3 - Generar inversa")
+    print("")
     #Testeo generar inversa
     #lambdaExp = 0.5
-    #print("Genero función exponencial 1", generarInversa(lambdaExp))
-    #print("Genero función exponencial 2", generarInversa(lambdaExp))
-    #print("Genero función exponencial 3", generarInversa(lambdaExp))
-    #print("Genero función exponencial 4", generarInversa(lambdaExp))
-    #print("Genero función exponencial 5", generarInversa(lambdaExp))
+    print("Genero función exponencial 1", generarInversa(0.5))
+    print("Genero función exponencial 2", generarInversa(0.5))
+    print("Genero función exponencial 3", generarInversa(0.5))
+    print("Genero función exponencial 4", generarInversa(0.5))
+    print("Genero función exponencial 5", generarInversa(0.5))
 
-    #1-4  
+    #1-4
+    print("")
+    print("Punto 1-4 - Generar normal")
+    print("")
     #Testeo generar normal
     #media = 0.4
     #varianza = 0.2
-    #print ("Genero distribución Normal", generarNormal(media,varianza))
+    print ("Genero distribución Normal", normal_boxmuller(0.4, 0.2, 10))
 
     
     #2--------------------------------
 
     
-
-    #2-1 y 2-2     
-    #genero numero aleatorio con funcion inversa de N 10
-    #DosUno_Inversa(10,0.4,0.5)
-    #DosUno_Inversa(10,0.2,0.5)
-    #DosUno_Inversa(10,0.1,0.5)
-   
-    #genero lo mismo anterior pero con cambio de N 30 
-    #DosUno_Inversa(30,0.4,0.5)
-    #DosUno_Inversa(30,0.2,0.5)
-    #DosUno_Inversa(30,0.1,0.5)
-
-    #genero con cambio de N 200
-    #DosUno_Inversa(200,0.4,0.5)
-    #DosUno_Inversa(200,0.2,0.5)
-    #DosUno_Inversa(200,0.1,0.5)
-
+    #2-1 y 2-2
+    print("")
+    print("Punto 2-1 y 2-2 - Generar funcion inversa n=10, n=30, n=200 con exp = 0.5")
+    print("")
+    #genero numero aleatorio con funcion inversa de N 10 con histogramas
+    #DosUno_Inversa(0.5)
 
     #2-3
+    print("")
+    print("Punto 2-3 - Generar funcion binomial n=50, construyo distribución empírica")
+    print("")
     #genero binomial n=10, p=0.3 - con 50 muestras
     #DosTres()
 
     #2-4
+    print("")
+    print("Punto 2-4 - A partir de la funcion empirica del punto anterior, generar una nueva muestra de numeros aleatorios, computar media y varianza")
+    print("")
     #Test del punto 2-4
     #DosCuatro()    
 
     #2-5
+    print("")
+    print("Punto 2-5 - Generar funcion binomial nuevamente con de tamaño 50, repito empirica")
+    print("")
     #entiendo que llamando a l funcion anterior 2 veces mas, ya estaría...
     #DosTres() 
-    #DosTres()
+    #DosCuatro()
 
 
     #3---------------------------------
 
-    #3-1 
-    #Con N = 10 
-    #Tres_Uno(10)
-
-    #Con N = 20  
-    #Tres_Uno(20)
-
-    #Con N = 50 
-    #Tres_Uno(50)
-
-    #Con N = 100 
-    #Tres_Uno(100)
+    #3-1
+    print("")
+    print("Punto 3-1 - Generar 4 muestras binomial con n=10 , 20 , 50 y 100")
+    print("")
+    #Con N = 10 , N = 20 , N = 50, N = 100
+    Tres_Uno()
 
     #3-2
-    #Con 100 muestras (son 100 muestras
-    #Tres_Dos()
-    #GenerarNormalEjemplo()
-
+    print("")
+    print("Punto 3-2 - Generar nuevamente 100, Calcula media y varianza, luego normalizo")
+    print("")
+    #Con 100 muestras (son 100 muestras)
+    Tres_Dos()
+    
     #3-3
-
-
+    print("")
+    print("Punto 3-3 - Calcular media muestral de las 4 muestras binomiales con n=10 , 20 , 50 y 100")
+    print("")
+    #Media Muestral con N = 10, N=20, N=50, N=100 
+    Tres_Tres()
+    
     #4---------------------------------
 
     #4-1
-    #Cuatro_Uno()
+    print("")
+    print("Punto 4-1 - Genero normales(100,5) con n= 10 y n=30. Obtengo estimaciones puntuales")
+    print("")
+    Cuatro_Uno()
 
     #4-2
-    #Cuatro_Dos()
+    print("")
+    print("Punto 4-2 - Con varianza 5, obtengo intervalos de confianza con 95% y 98%")
+    print("")
+    Cuatro_Dos()
 
     #4-3
-    #Cuatro_Tres()    
+    print("")
+    print("Punto 4-3 - Con varianza desconocida, obtengo intervalos de confianza con 95% y 98%")
+    print("")
+    Cuatro_Tres()    
 
     #4-4
-    #Cuatro_Cuatro()
+    print("")
+    print("Punto 4-4 - Probar con nivel 0,99 hipotesis de varianza > 5 - Luego caluclar error tipo 2, con alternativa varianza = 6")
+    print("")
+    Cuatro_Cuatro()
 
     #4-5
+    print("")
+    print("Punto 4-5 - Subgrupos de longitud 0,5 - pruebo nivel 0,99 de que la muestra es distrubición normal")
+    print("")
     Cuatro_Cinco()
 
 Tests()
