@@ -897,10 +897,11 @@ def Cuatro_Cuatro():
         print ("El valor de la varianza con el estimador es", float(round(varianza,4)))
         print ("")
         print ("Entonces la hipotesis de la varianza mayor a 5 es VERDADERA") #verdadera hipotesis nula
-           
+
+
+    print("---------------------------")  
 #calcular la probabilidad de cometer error tipo 2
 #calcular varianza muestral limite
-
 
     #formula original: Chi2 = (n-1)*(s)^2 / desviación^2
     print("")
@@ -911,51 +912,33 @@ def Cuatro_Cuatro():
     print("Varianza muestral 30: ",varianza30)
     print("")
     #(s)^2 = chi2 * desviación^2 / (n-1)
-    varianza_muestral_limite = chi_cuadrado * 6 / (len(muestra30)-1)
-    print ("Varianza muestral limite",varianza_muestral_limite)
 
-    #calculo nuevo chi cuadrado con s^2 = 6  -> Chi2 = (n-1)*(s)^2 / desviación^2
-    nuevo_chi_cuadrado = (len(muestra30) - 1) * varianza_muestral_limite / 6
-    print ("Nuevo chi cuadrado con la varianza muestral limite, dividio desviacion = 6", nuevo_chi_cuadrado)
 
-    new_chi_cuadrado = float(round(chi2.ppf(0.99, len(muestra30)-1),4))
-    print ("New chi cuadrado ", new_chi_cuadrado)
+    #varianza muestreal limite = chi_cuadrado * 5 / (len(muestra)-1)
+    #nuevo_chi_cuadrado = (len(muestra) - 1) * varianza_muestral_limite / 6
 
-    s2 = ((new_chi_cuadrado)*36 / 29)
+    varianza_limite = chi_cuadrado * 5 / (len(muestra30)-1)
+
+    nuevo_chi_cuadrado = (len(muestra30) - 1) * varianza_limite / 6
 
 #calculo la probabilidad de que el estadistico de prueba chi-cuadrado sea mayor al nuevo chi-cuadrado
-    nuevo = 1-chi2.cdf(nuevo_chi_cuadrado,29)
-    print("nuevo chi cuadrado", nuevo)
+    #print(1-chi2.cdf(nuevo_chi_cuadrado,29))
+    #print ("la probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
 
-    
 
-    print("FALTA CALCULAR LA PROBAILIDAD DE ERROR TIPO 2")
+    print("nuevo chi cuadrado: ",nuevo_chi_cuadrado)
 
-    #yo busco P(X > 49.588 | v = 6) -> P(((n-1)S)/5 > 49.588)
+    chi = 1-chi2.cdf(nuevo_chi_cuadrado,len(muestra30)-1)
+    print("")
 
-    #entonces despejas S y te da S=8.55
+    print("Probabilidad calculada: ",chi)
 
-    #te fijas el chi limite de ese 8.55
+    print("")
+    probabilidad = (2*chi)
 
-    #con la que asumis es la varianza real, 6, -> 29x8.55/6 = 41.325
+    print ("la probabilidad segun libro Wackerly = p*2 : ",float(round(probabilidad,3)))
 
-    #significa que vos queres saber cual es la probabilidad de caer más allá de 49.588 si la varianza real es 6
-
-    #   H0 V > 5, H1 V = 6
-
-    #con esa varianza que me deja parado justo en el punto critico
-
-    #si la varianza real en vez de 5 es 6
-
-    #que chi corresponde? y que proba tengo de pasarla
-
-    #el que chi corresponde es el 41.325
-
-    #y la proba sería el 6.5
-
-    #print ("La probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
-        
-
+      
 #4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
 def Cuatro_Cinco():
 
@@ -1146,19 +1129,19 @@ def Tests():
     print("")
     print("Punto 4-1 - Genero normales(100,5) con n= 10 y n=30. Obtengo estimaciones puntuales")
     print("")
-    Cuatro_Uno()
+    #Cuatro_Uno()
 
     #4-2
     print("")
     print("Punto 4-2 - Con varianza 5, obtengo intervalos de confianza con 95% y 98%")
     print("")
-    Cuatro_Dos()
+    #Cuatro_Dos()
 
     #4-3
     print("")
     print("Punto 4-3 - Con varianza desconocida, obtengo intervalos de confianza con 95% y 98%")
     print("")
-    Cuatro_Tres()    
+    #Cuatro_Tres()    
 
     #4-4
     print("")
@@ -1170,6 +1153,6 @@ def Tests():
     print("")
     print("Punto 4-5 - Subgrupos de longitud 0,5 - pruebo nivel 0,99 de que la muestra es distrubición normal")
     print("")
-    Cuatro_Cinco()
+    #Cuatro_Cinco()
 
 Tests()
