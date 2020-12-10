@@ -44,41 +44,17 @@ def generarInversa(lambdaExponencial):
     aleatorio = calcularAleatorio()
     #print("El numero aleatorio generado es: ", aleatorio)
 
-    return float(round(((-(math.log(aleatorio)))/lambdaExponencial),4))
+    return float(round(((-(math.log(1-aleatorio)))/lambdaExponencial),4))
+    #return float(round(((-(math.log(aleatorio)))/lambdaExponencial),4))
 
 #1-4. Investigar como generar números aleatorios con distribución normal. Implementarlo.
 
-def GenerarNormal(media, varianza,n):
-
-    u1 = calcularAleatorio()
-    u2 = calcularAleatorio()
-    #print("El numero aleatorio U1 generado es: ", u1)
-    #print("El numero aleatorio U2 generado es: ", u2)
-
-    #z = (math.sqrt(-2*(math.pi)*(u1)))*math.cos(math.radians(2*(math.pi)*(u2)))
-
-    a = ((-2)*(math.log(u1)))
-    b = math.cos(math.radians((2)*(math.pi)*(u2)))
-    c = math.sin(math.radians((2)*(math.pi)*(u2)))
-
-
-    #revisar si usamos seno o coseno
-    
-    if n % 2 == 0:
-        
-        z = ((math.sqrt(a))*(c))
-        result = float(round((media + (varianza*z)),4))
-        print ("resultado: ", result)
-        return (media + (varianza*z))
-
-    z = ((math.sqrt(a))*(b))
-    result = float(round((media + (varianza*z)),4))
-    print ("resultado: ", result)
-    return (media + (varianza*z))
-
 def normal_boxmuller(mu, sigma, size):
+
     sample=[]
+
     while size != 0:
+        
         unif1 = random.random()
         unif2 = random.random()
         norm1 = math.sqrt(-2*math.log(unif1))*math.cos(2*math.pi*unif2) * sigma + mu
@@ -90,24 +66,7 @@ def normal_boxmuller(mu, sigma, size):
         sample.append(norm1)
     return sample
 
-def GenerarNormalEjemplo():
-
-    u1 = 0.2841
-    u2 = 0.8336
-    #print("El numero aleatorio U1 generado es: ", u1)
-    #print("El numero aleatorio U2 generado es: ", u2)
-
-    a = ((-2)*(math.log(u1)))
-    b = math.cos(math.radians((2)*(math.pi)*(u2)))
-    
-    print ("resultado a: ", (math.sqrt(a)))
-    print ("resultado b: ", (b))
-    
-    z = ((math.sqrt(a))*(b))
-    print ("resultado z: ", z)
-    result = float(round((168 + (8*z)),4))
-    print ("resultado: ", result)
-    
+   
 def estandarizar(muestra,n,media,desviacion):
     
     #   Z = (X - mu)/sigma
@@ -421,16 +380,16 @@ def empirica3(samples, valor):
 
     return accumulator/len(samples)
 
-def random_discreto(dist_x, dist_y):
+def random_discreto(binomial, empirica):
 
     x = random.uniform(0, 1)
     #print('x:' + str(x))
 
     counter = 0
     
-    for i in dist_y:
+    for i in empirica:
         if i >= x:
-            return  dist_x[counter]
+            return  binomial[counter]
         counter += 1
 
 def DosTres():
@@ -450,6 +409,11 @@ def DosTres():
 
 #----------------
 
+    #Primero generamos la empirica a partir de la acumulada de las muestras binomiales. Luego para generar muestras aleatorias a partir
+    #de la empirica, se realiza una inversa. Genero un numero aleatorio uniforme, y lo comparo con la muesta empirica en la posicion.
+    #si la empirica es mayor o igual al aleatorio, devuelvo la muestra binomial en la posicion CONTADOR
+    #si es menor, sumo el contador y comparo la siguiente muestra empirica.
+
     for i in range(50):
         binomial = [generarBinomial(10, 0.3) for a in range(50)]
         empiric = []
@@ -459,6 +423,10 @@ def DosTres():
 
     orden_binomial = sorted(list(set(binomial)))
     orden_empirica = sorted(list(set(empiric)))
+
+    print("")
+    print("empirica:",empiric)
+    print("")
 
     empirica_inversa = [random_discreto(orden_binomial, orden_empirica) for b in range(50)]
     print("")
@@ -1153,6 +1121,6 @@ def Tests():
     print("")
     print("Punto 4-5 - Subgrupos de longitud 0,5 - pruebo nivel 0,99 de que la muestra es distrubición normal")
     print("")
-    #Cuatro_Cinco()
+    Cuatro_Cinco()
 
 Tests()
