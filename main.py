@@ -866,46 +866,28 @@ def Cuatro_Cuatro():
         print ("")
         print ("Entonces la hipotesis de la varianza mayor a 5 es VERDADERA") #verdadera hipotesis nula
 
-
-    print("---------------------------")  
-#calcular la probabilidad de cometer error tipo 2
-#calcular varianza muestral limite
-
-    #formula original: Chi2 = (n-1)*(s)^2 / desviación^2
-    print("")
-    print("formula original: Chi2 = (n-1)*(s)^2 / desviación^2")
-    print("")
-
-    varianza30 = CalcularVarianza2(muestra30,30)
-    print("Varianza muestral 30: ",varianza30)
-    print("")
-    #(s)^2 = chi2 * desviación^2 / (n-1)
-
-
-    #varianza muestreal limite = chi_cuadrado * 5 / (len(muestra)-1)
-    #nuevo_chi_cuadrado = (len(muestra) - 1) * varianza_muestral_limite / 6
-
-    varianza_limite = chi_cuadrado * 5 / (len(muestra30)-1)
-
-    nuevo_chi_cuadrado = (len(muestra30) - 1) * varianza_limite / 6
-
-#calculo la probabilidad de que el estadistico de prueba chi-cuadrado sea mayor al nuevo chi-cuadrado
-    #print(1-chi2.cdf(nuevo_chi_cuadrado,29))
-    #print ("la probabilidad de cometer el error de tipo 2 es",float(round(probabilidad,3)))       
-
-
-    print("nuevo chi cuadrado: ",nuevo_chi_cuadrado)
-
-    chi = 1-chi2.cdf(nuevo_chi_cuadrado,len(muestra30)-1)
-    print("")
-
-    print("Probabilidad calculada: ",chi)
+#-----------------------------------------------
 
     print("")
-    probabilidad = (2*chi)
+    print("NUEVA INTERPRETACION")
+    print("Calculo el chi2 con varianza30 y varianza hipotetica = 6")
 
-    print ("la probabilidad segun libro Wackerly = p*2 : ",float(round(probabilidad,3)))
+    nuevo_chi2 = ((len(muestra30) - 1) * varianza30 / 6)
 
+    print("")
+    print("nuevo chi2: ",nuevo_chi2)
+
+    chi_cuadrado_test = float(round(chi2.ppf(0.01, 29),4))
+
+    print("Chi-BASE: ",chi_cuadrado_test)
+
+    print("Como nuestro estadistico de prueba calculado, cae en la region de RECHAZO (es mayor al chi2 con nivel 0.99) no se puede sacar la probabilidad") 
+
+    print("Entonces, H1 ES RECHAZADA. No hay suficiente evidencia para indicar que s2 no excede de 6, en el nivel de significancia de 99%.")
+
+    chi3 = 1-chi2.cdf(nuevo_chi2,len(muestra30)-1)
+    print("")
+    print("Probabilidad calculada: ",chi3)  
       
 #4-5 Agrupando los datos en subgrupos de longitud 0,5, probar a nivel 0,99 la hipótesis de que la muestra proviene de una distribución normal.
 def Cuatro_Cinco():
